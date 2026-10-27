@@ -1,0 +1,148 @@
+---
+title: "Extended Kalman Filter State Estimation"
+week: 10
+description: "Warm-up: Implement a 1D linear Kalman filter for sensor fusion. Core: Implement an Extended Kalman Filter (EKF) for a 2D differential-drive robot. Boss Level: Handle asynchronous GPS/IMU sensor updates and outlier rejection."
+---
+
+# Lab 10: Extended Kalman Filter State Estimation
+
+In this lab, you will construct an Extended Kalman Filter (EKF) to estimate the pose (x, y, θ) of a 2D mobile robot fusing noisy wheel odometry and landmark/GPS observations.
+
+<InfoCallout title="Prerequisites">
+Before attempting this lab, review Lecture 10 on linear Kalman filters, motion model linearization via Taylor expansion, and Jacobian matrix derivations.
+</InfoCallout>
+
+## Extended Kalman Filter Formulation
+
+For a non-linear discrete-time system:
+
+```
+x_k = f(x_{k-1}, u_k) + w_k,   w_k ~ N(0, Q_k)
+z_k = h(x_k) + v_k,            v_k ~ N(0, R_k)
+```
+
+### Prediction Step
+
+Predict the state estimate and propagate state covariance:
+
+```
+x_hat_k_minus = f(x_hat_{k-1}, u_k)
+P_k_minus = F_k * P_{k-1} * F_k^T + Q_k
+```
+
+where `F_k = ∂f / ∂x` evaluated at `(x_hat_{k-1}, u_k)` is the Jacobian matrix of the motion model.
+
+### Measurement Update Step
+
+Compute innovation and update state estimate:
+
+```
+y_k = z_k - h(x_hat_k_minus)
+S_k = H_k * P_k_minus * H_k^T + R_k
+K_k = P_k_minus * H_k^T * S_k^-1
+x_hat_k = x_hat_k_minus + K_k * y_k
+P_k = (I - K_k * H_k) * P_k_minus
+```
+
+---
+
+## Code Placeholders & Starter Template
+
+Fill in the missing matrix operations marked with `TODO`.
+
+```python
+import numpy as np
+
+class RobotEKF:
+    def __init__(self, x0: np.ndarray, P0: np.ndarray, Q: np.ndarray, R_gps: np.ndarray):
+        """
+        State vector x = [x, y, theta]^T
+        """
+        self.x = x0.astype(np.float64) # (3, 1)
+        self.P = P0.astype(np.float64) # (3, 3)
+        self.Q = Q.astype(np.float64)   # Process noise
+        self.R_gps = R_gps.astype(np.float64) # Measurement noise
+
+    def predict(self, u: np.ndarray, dt: float):
+        """
+        u = [v, w]^T (linear and angular velocity)
+        """
+        v, w = u[0], u[1]
+        theta = self.x[2, 0]
+
+        # 1. Non-linear state propagation
+        if abs(w) < 1e-5:
+            dx = v * np.cos(theta) * dt
+            dy = v * np.sin(theta) * dt
+            dtheta = 0.0
+        else:
+            dx = (v / w) * (np.sin(theta + w * dt) - np.sin(theta))
+            dy = (v / w) * (-np.cos(theta + w * dt) + np.cos(theta))
+            dtheta = w * dt
+
+        self.x[0, 0] += dx
+        self.x[1, 0] += dy
+        self.x[2, 0] = (self.x[2, 0] + dtheta + np.pi) % (2 * np.pi) - np.pi
+
+        # 2. Jacobian of motion model F_k
+        F = np.eye(3)
+        if abs(w) < 1e-5:
+            F[0, 2] = -v * np.sin(theta) * dt
+            F[1, 2] = v * np.cos(theta) * dt
+        else:
+            F[0, 2] = (v / w) * (np.cos(theta + w * dt) - np.cos(theta))
+            F[1, 2] = (v / w) * (np.sin(theta + w * dt) - np.sin(theta))
+
+        # TODO: Propagate state covariance matrix P
+        # self.P = F @ self.P @ F.T + self.Q
+        self.P = F @ self.P @ F.T + self.Q
+
+    def update_gps(self, z_gps: np.ndarray):
+        """
+        z_gps = [x_meas, y_meas]^T
+        """
+        # Measurement matrix H (2x3)
+        H = np.array([
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0]
+        ])
+
+        # Innovation residual
+        z_pred = H @ self.x
+        y = z_gps.reshape(2, 1) - z_pred
+
+        # Innovation covariance
+        S = H @ self.P @ H.T + self.R_gps
+
+        # Kalman gain
+        K = self.P @ H.T @ np.linalg.inv(S)
+
+        # State update
+        self.x = self.x + K @ y
+
+        # Covariance update
+        I = np.eye(3)
+        self.P = (I - K @ H) @ self.P
+
+
+if __name__ == "__main__":
+    x0 = np.zeros((3, 1))
+    P0 = np.eye(3) * 0.1
+    Q = np.diag([0.01, 0.01, 0.005])
+    R = np.diag([0.1, 0.1])
+
+    ekf = RobotEKF(x0, P0, Q, R)
+    ekf.predict(np.array([1.0, 0.1]), dt=0.1)
+    ekf.update_gps(np.array([0.09, 0.005]))
+    print("Updated state estimate:\n", ekf.x.ravel())
+```
+
+<Callout title="Outlier Rejection Strategy">
+In noisy real-world testing environments, sensor glitches can degrade state estimates. Calculate the Mahalanobis Distance `d^2 = y_k^T * S_k^-1 * y_k` and drop measurements where `d^2` exceeds the `chi^2` threshold (e.g., 5.991 for 2 degrees of freedom at 95% confidence).
+</Callout>
+
+## Deliverables & Tasks
+
+1. **Warm-Up**: Test the starter code on zero-noise simulated odometry and verify state matches ground truth.
+2. **Core Task**: Integrate Gaussian noise (`sigma_v = 0.2 m/s`, `sigma_w = 0.05 rad/s`) and run 500 prediction-update iterations.
+3. **Boss Level**: Simulate a GPS signal blackout between `t = 15s` and `t = 25s`. Plot the `2*sigma` error bounds showing covariance expansion during blackout and convergence upon GPS recovery.
