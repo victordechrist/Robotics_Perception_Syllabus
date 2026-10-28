@@ -1,4 +1,4 @@
-import { User, ShieldCheck, Mail, Clock, MessageSquare, MapPin } from "lucide-react";
+import { User, ShieldCheck, Clock, MessageSquare, MapPin } from "lucide-react";
 
 export const metadata = {
   title: "Course Staff | CS 289 / ROB 201",
