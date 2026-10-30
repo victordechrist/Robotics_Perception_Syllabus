@@ -1,0 +1,79 @@
+---
+title: "Kalman Filtering (KF & EKF)"
+week: 10
+description: "State estimation, the predict / update cycle, Kalman gain as a trust ratio, and the Extended Kalman Filter for nonlinear models."
+date: "2025-11-04"
+---
+
+# Lecture 10: Kalman Filtering (KF & EKF)
+
+> **The hook:** Your model says the robot is here. Your sensor says it is there. The Kalman filter is the optimal compromise — when the noise is Gaussian.
+
+<Note title="What We Cover">
+
+- State, covariance, and the Bayes filter
+- Linear KF: predict and update
+- Kalman gain as a trust ratio
+- EKF: nonlinear models, linearized covariance
+- Innovation and filter consistency (NIS)
+
+</Note>
+
+---
+
+## Predict
+
+Push the state through the motion model and grow the covariance. In the EKF, the mean goes through the true nonlinear `f`; the covariance goes through its Jacobian `F`.
+
+```python
+x_pred = f(x, u)
+F = jacobian_f(x, u)
+Sigma_pred = F @ Sigma @ F.T + Q
+```
+
+---
+
+## Update
+
+Linearize the measurement model, form the innovation covariance `S`, and compute the gain. `K` is large when the prediction is uncertain and the sensor is precise, small in the opposite case.
+
+```python
+H = jacobian_h(x_pred)
+S = H @ Sigma_pred @ H.T + R
+K = Sigma_pred @ H.T @ np.linalg.inv(S)
+y = z - h(x_pred)
+x = x_pred + K @ y
+Sigma = (np.eye(n) - K @ H) @ Sigma_pred
+```
+
+---
+
+## Is the Filter Honest?
+
+The normalized innovation squared `y^T S^-1 y` should follow a χ² distribution. If it is consistently too large, the filter is overconfident — `Q` or `R` is too small.
+
+<Warning title="Common Misconception">
+
+Predicting the state with `F @ x` in the EKF (discarding the nonlinearity) or reversing the gain product order. Mean through `f`, covariance through `F`.
+
+</Warning>
+
+---
+
+## Live Lab
+
+Put this lecture into practice in [Lab 10](/labs/week-10-kalman-filter) — work through its **Exercise** tab (ordering the pipeline) and argue it out in the **Workspace** reasoning tree.
+
+## Exercises
+
+### Warm-Up
+
+Run a 1D constant-velocity KF on noisy position readings. Plot the estimate and the ±2σ band.
+
+### Core
+
+Implement an EKF for a unicycle robot with range-bearing measurements to known landmarks.
+
+### Boss Level
+
+Make the filter overconfident by shrinking `Q`. Plot NIS over time and show where the filter diverges.

@@ -1,0 +1,75 @@
+---
+title: "Visual SLAM Foundations"
+week: 12
+description: "Landmark-based SLAM, keyframes, loop closure with geometric verification, and pose-graph optimization with g2o / GTSAM."
+date: "2025-11-18"
+---
+
+# Lecture 12: Visual SLAM Foundations
+
+> **The hook:** To localize you need a map; to map you need to know where you are. SLAM solves both at once — and loop closure is the moment it pays off.
+
+<Note title="What We Cover">
+
+- The SLAM problem: joint pose and map estimation
+- Front end: tracking and keyframe selection
+- Loop closure: place recognition plus geometric verification
+- Back end: pose-graph optimization
+- g2o and GTSAM in practice
+
+</Note>
+
+---
+
+## Front End
+
+Track features frame to frame, estimate relative motion, and promote a new keyframe only when parallax is large enough. Keyframing every frame bloats the graph with nearly identical constraints.
+
+---
+
+## Loop Closure
+
+Place recognition (bag-of-words) finds candidate revisits. Geometric verification — RANSAC on matched features — confirms them. A single false loop edge can fold the whole map.
+
+---
+
+## Pose-Graph Optimization
+
+Nodes are keyframe poses; edges are relative-pose constraints from odometry and loop closures. Optimizing the full graph redistributes accumulated drift over every pose.
+
+```python
+import gtsam
+
+graph = gtsam.NonlinearFactorGraph()
+graph.add(gtsam.PriorFactorPose2(0, gtsam.Pose2(0, 0, 0), prior_noise))
+for i, (dx, dy, dth) in enumerate(odometry):
+    graph.add(gtsam.BetweenFactorPose2(i, i + 1, gtsam.Pose2(dx, dy, dth), odom_noise))
+graph.add(gtsam.BetweenFactorPose2(n - 1, 0, loop_pose, loop_noise))
+result = gtsam.LevenbergMarquardtOptimizer(graph, initial).optimize()
+```
+
+<Warning title="Common Misconception">
+
+Adding unverified loop edges, or optimizing frame by frame. Verify before closing; optimize globally.
+
+</Warning>
+
+---
+
+## Live Lab
+
+Put this lecture into practice in [Lab 12](/labs/week-12-visual-slam) — work through its **Exercise** tab (ordering the pipeline) and argue it out in the **Workspace** reasoning tree.
+
+## Exercises
+
+### Warm-Up
+
+Build a square trajectory from noisy odometry and plot the drift at the end.
+
+### Core
+
+Add a loop-closure edge and optimize the pose graph with GTSAM. Report the end-point error before and after.
+
+### Boss Level
+
+Inject one false loop closure. Show the damage, then add a robust kernel (Huber) and show the recovery.

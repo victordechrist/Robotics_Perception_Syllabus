@@ -1,0 +1,83 @@
+---
+title: "Feature Extraction & Matching"
+week: 4
+description: "Keypoints and descriptors (SIFT, ORB), brute-force and FLANN matching, Lowe ratio test, and RANSAC homography estimation."
+date: "2025-09-23"
+---
+
+# Lecture 4: Feature Extraction & Matching
+
+> **The hook:** Two photos of the same building share thousands of pixels. Finding which pixel in one image is which pixel in the other is the problem underneath stereo, SLAM, and panoramas.
+
+<Note title="What We Cover">
+
+- Keypoints vs descriptors
+- SIFT: scale-space extrema and gradient histograms
+- ORB: FAST + oriented BRIEF, binary and fast
+- Matching: brute force, FLANN, Hamming vs L2
+- Lowe ratio test and RANSAC geometric verification
+
+</Note>
+
+---
+
+## Detect, Then Describe
+
+A detector finds repeatable locations; a descriptor summarizes the patch around each one as a vector. Good descriptors are invariant to rotation, scale, and lighting so the same physical point produces nearly the same vector in two images.
+
+```python
+orb = cv2.ORB_create(nfeatures=2000)
+kp1, des1 = orb.detectAndCompute(img1, None)
+kp2, des2 = orb.detectAndCompute(img2, None)
+```
+
+---
+
+## Matching and the Ratio Test
+
+For each descriptor, find its two nearest neighbors in the other image. Keep the match only if the best is clearly better than the second-best — Lowe ratio `m.distance < 0.75 * n.distance`. Repeated textures fail this test, which is exactly the point.
+
+```python
+bf = cv2.BFMatcher(cv2.NORM_HAMMING)
+knn = bf.knnMatch(des1, des2, k=2)
+good = [m for m, n in knn if m.distance < 0.75 * n.distance]
+```
+
+---
+
+## RANSAC: Geometry as a Filter
+
+Even after the ratio test, some matches are wrong. RANSAC repeatedly fits a model (here a homography) to a minimal random subset, counts how many matches agree, and keeps the best. Least squares on all matches lets a few outliers drag the solution anywhere.
+
+```python
+src = np.float32([kp1[m.queryIdx].pt for m in good])
+dst = np.float32([kp2[m.trainIdx].pt for m in good])
+H, mask = cv2.findHomography(src, dst, cv2.RANSAC, 3.0)
+inliers = int(mask.sum())
+```
+
+<Warning title="Common Misconception">
+
+Keeping every match where best < second-best (always true), or fitting the homography by least squares on all matches. Ratio must be strict, and geometry must be estimated robustly.
+
+</Warning>
+
+---
+
+## Live Lab
+
+Put this lecture into practice in [Lab 4](/labs/week-4-feature-matching) — work through its **Exercise** tab (ordering the pipeline) and argue it out in the **Workspace** reasoning tree.
+
+## Exercises
+
+### Warm-Up
+
+Detect ORB keypoints on an image and on a 30-degree rotated copy. How many keypoints are detected in both?
+
+### Core
+
+Match two overlapping photos with the ratio test, then RANSAC. Report the inlier ratio and draw only the inliers.
+
+### Boss Level
+
+Sweep the ratio threshold from 0.5 to 0.95. Plot inlier count and inlier ratio. Where is the knee?

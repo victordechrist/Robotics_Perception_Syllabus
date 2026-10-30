@@ -1,0 +1,74 @@
+---
+title: "Final Capstone Presentations"
+week: 15
+description: "Benchmarking honestly: reproducible runs, aligned trajectory metrics (ATE / RPE), latency percentiles, and the final report."
+date: "2025-12-09"
+---
+
+# Lecture 15: Final Capstone Presentations
+
+> **The hook:** A demo shows it works once. A benchmark shows it works — and tells you exactly how well.
+
+<Note title="What We Cover">
+
+- Reproducible evaluation runs
+- Trajectory alignment (Umeyama / Sim3)
+- ATE vs RPE
+- Latency percentiles
+- Final report, demo, and poster expectations
+
+</Note>
+
+---
+
+## Fresh, Reproducible Runs
+
+Every number in your report comes from a clean replay of the dataset through the current pipeline, with fixed seeds. Cached trajectories hide regressions.
+
+---
+
+## Align, Then Measure
+
+Visual odometry estimates live in an arbitrary frame (and, for monocular, an arbitrary scale). Align to ground truth with Umeyama first, then compute ATE (global consistency) and RPE (local drift).
+
+```python
+est_aligned = umeyama_align(est, gt, with_scale=True)
+ate = np.sqrt(np.mean(np.sum((est_aligned - gt)**2, axis=1)))
+rpe = relative_pose_error(est_aligned, gt, delta=1)
+```
+
+---
+
+## Latency
+
+Report p50 and p95 per stage and end to end, measured on the target hardware.
+
+```python
+p50, p95 = np.percentile(latencies_ms, [50, 95])
+```
+
+<Warning title="Common Misconception">
+
+Computing ATE without alignment, re-using cached outputs, or reporting only mean latency.
+
+</Warning>
+
+---
+
+## Live Lab
+
+Put this lecture into practice in [Lab 15](/labs/week-15-capstone-final) — work through its **Exercise** tab (ordering the pipeline) and argue it out in the **Workspace** reasoning tree.
+
+## Exercises
+
+### Warm-Up
+
+Compute ATE on a provided trajectory with and without alignment. Explain the difference.
+
+### Core
+
+Produce the full benchmark table for your capstone: ATE, RPE, coverage or accuracy, p50 / p95 latency.
+
+### Boss Level
+
+Run an ablation: remove one stage of your pipeline and report the change in every metric.

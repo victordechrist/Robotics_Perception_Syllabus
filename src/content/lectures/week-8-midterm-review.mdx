@@ -1,0 +1,70 @@
+---
+title: "Midterm Review & Project Checkpoint"
+week: 8
+description: "An end-to-end audit of weeks 1–7: frames, projection, features, stereo, flow, and calibration as one pipeline."
+date: "2025-10-21"
+---
+
+# Lecture 8: Midterm Review & Project Checkpoint
+
+> **The hook:** Half a course of tools becomes one pipeline. Today the question is not "can you run each stage" but "do you know which stage broke".
+
+<Note title="What We Cover">
+
+- The perception pipeline, end to end
+- Stage dependencies: what must be true before each stage runs
+- Failure signatures for each stage
+- Midterm format and review problems
+- Capstone checkpoint expectations
+
+</Note>
+
+---
+
+## One Pipeline
+
+Calibrate → undistort → rectify → detect and describe → match → ratio test → RANSAC → pose or depth → validity checks. Every stage assumes the previous one is correct.
+
+---
+
+## Failure Signatures
+
+Wrong intrinsics: depth biased by a constant factor. Missing undistortion: straight lines bow near the image edges and stereo matches fail there. Skipped RANSAC: pose jumps between frames. Bad rectification: disparity map full of holes.
+
+---
+
+## Review Problems
+
+Each midterm problem asks you to (1) name the stage, (2) state its precondition, and (3) give a numerical check that proves the stage worked. Practice that three-part answer on every week of the course.
+
+```python
+def coverage(depth, zmin=0.2, zmax=20.0):
+    valid = np.isfinite(depth) & (depth > zmin) & (depth < zmax)
+    return valid.mean()
+```
+
+<Warning title="Common Misconception">
+
+Matching on raw, undistorted frames or estimating the essential matrix on all matches. Calibration gates geometry; RANSAC gates pose.
+
+</Warning>
+
+---
+
+## Live Lab
+
+Put this lecture into practice in [Lab 8](/labs/week-8-midterm-review) — work through its **Exercise** tab (ordering the pipeline) and argue it out in the **Workspace** reasoning tree.
+
+## Exercises
+
+### Warm-Up
+
+For each stage in the pipeline, write one sentence on its precondition.
+
+### Core
+
+Run the full stereo pipeline on a provided pair and report depth coverage. Then deliberately break one stage and show how the coverage changes.
+
+### Boss Level
+
+Given a broken pipeline output (depth map, match image, pose trace), identify which stage failed and justify it from the numbers alone.
