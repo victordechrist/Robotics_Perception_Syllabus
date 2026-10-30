@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { labs, Lab } from "@/data/labs";
+import { labs } from "@/data/labs";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Clock, Lock, Sparkles, BookOpen } from "lucide-react";
+import { ArrowLeft, Clock, Lock, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // 5.4 generateStaticParams returns all 15 lab slugs
