@@ -50,10 +50,10 @@ import numpy as np
 def rotation_matrix_2d(theta: float) -> np.ndarray:
     """
     Computes a 2D rotation matrix for a given angle in radians.
-
+    
     Args:
         theta: Angle in radians.
-
+        
     Returns:
         2x2 numpy array representing SO(2) rotation matrix.
     """
@@ -67,11 +67,11 @@ def rotation_matrix_2d(theta: float) -> np.ndarray:
 def make_se3_transform(R: np.ndarray, t: np.ndarray) -> np.ndarray:
     """
     Constructs a 4x4 SE(3) homogeneous transformation matrix.
-
+    
     Args:
         R: 3x3 rotation matrix
         t: 3x1 or 3-element translation vector
-
+        
     Returns:
         4x4 SE(3) homogeneous matrix.
     """
@@ -84,11 +84,11 @@ def make_se3_transform(R: np.ndarray, t: np.ndarray) -> np.ndarray:
 def transform_points(T: np.ndarray, points: np.ndarray) -> np.ndarray:
     """
     Applies an SE(3) transformation to an array of 3D points.
-
+    
     Args:
         T: 4x4 homogeneous transform
         points: (N, 3) array of 3D points
-
+        
     Returns:
         (N, 3) array of transformed 3D points
     """
@@ -96,7 +96,7 @@ def transform_points(T: np.ndarray, points: np.ndarray) -> np.ndarray:
     # Convert to homogeneous coordinates (N, 4)
     ones = np.ones((num_points, 1), dtype=points.dtype)
     points_h = np.hstack([points, ones])
-
+    
     # Apply transformation: (T @ points_h.T).T
     transformed_h = (T @ points_h.T).T
     return transformed_h[:, :3]
