@@ -1,0 +1,85 @@
+---
+title: "ROS 2 Integration & System Architecture"
+week: 13
+description: "Nodes, topics, services, QoS, the tf2 transform tree, and integrating vision with state estimation in ROS 2."
+date: "2025-11-25"
+---
+
+# Lecture 13: ROS 2 Integration & System Architecture
+
+> **The hook:** Your perception code works in a notebook. A robot needs it as a node that runs forever, at rate, next to twenty others.
+
+<Note title="What We Cover">
+
+- Nodes, topics, services, and actions
+- Node lifecycle: init, spin, shutdown
+- Typed messages and QoS
+- tf2: the transform tree
+- Integrating a vision node with an EKF node
+
+</Note>
+
+---
+
+## Node Lifecycle
+
+`rclpy.init` creates the context, the node owns publishers and subscriptions, and `rclpy.spin` hands control to the executor that dispatches callbacks. Shut down in reverse order.
+
+```python
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import Image
+
+class Perception(Node):
+    def __init__(self):
+        super().__init__("perception")
+        self.sub = self.create_subscription(Image, "/camera/image_raw", self.cb, 10)
+        self.pub = self.create_publisher(Detections, "/detections", 10)
+
+    def cb(self, msg):
+        self.pub.publish(self.to_msg(self.perceive(msg)))
+
+rclpy.init()
+node = Perception()
+rclpy.spin(node)
+node.destroy_node()
+rclpy.shutdown()
+```
+
+---
+
+## tf2
+
+Every frame — map, odom, base_link, camera — lives in one transform tree. Ask tf2 for the transform at the image timestamp, not the latest one, or fast motion will smear your detections.
+
+---
+
+## Integration
+
+The vision node publishes measurements; the EKF node subscribes, fuses them with odometry, and publishes the pose and its covariance. Typed messages are the contract between nodes.
+
+<Warning title="Common Misconception">
+
+Creating publishers before `rclpy.init`, or replacing `spin` with a `while True: sleep()` loop — callbacks never fire.
+
+</Warning>
+
+---
+
+## Live Lab
+
+Put this lecture into practice in [Lab 13](/labs/week-13-ros2-integration) — work through its **Exercise** tab (ordering the pipeline) and argue it out in the **Workspace** reasoning tree.
+
+## Exercises
+
+### Warm-Up
+
+Write a talker / listener pair and inspect the topic with `ros2 topic echo` and `ros2 topic hz`.
+
+### Core
+
+Wrap your week-4 feature matcher as a ROS 2 node that subscribes to a camera topic and publishes match counts.
+
+### Boss Level
+
+Publish a static transform from base_link to camera and use tf2 to express your detections in the map frame.

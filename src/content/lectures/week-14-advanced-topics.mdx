@@ -1,0 +1,81 @@
+---
+title: "Advanced Topics & Capstone Polish"
+week: 14
+description: "Neural implicit fields (NeRF), learned descriptors, fallback policies, and performance optimization for the capstone."
+date: "2025-12-02"
+---
+
+# Lecture 14: Advanced Topics & Capstone Polish
+
+> **The hook:** Learned methods now beat hand-crafted ones on benchmarks. Robots still need to know what to do when the network is wrong.
+
+<Note title="What We Cover">
+
+- NeRF: volume rendering a learned field
+- Learned descriptors and matchers
+- Fallback policies: learned with a classical safety net
+- Profiling and latency budgets
+- Capstone polish checklist
+
+</Note>
+
+---
+
+## NeRF
+
+A NeRF is a network that maps a 3D point and view direction to density and color. Rendering samples points along each ray, queries the network, and alpha-composites the results.
+
+```python
+t = np.linspace(near, far, n_samples)
+pts = o + t[:, None] * d
+sigma, rgb = nerf(pts, d)
+delta = np.diff(t, append=far)
+alpha = 1 - np.exp(-sigma * delta)
+T = np.cumprod(np.r_[1.0, 1 - alpha[:-1]])
+color = (T * alpha)[:, None] * rgb
+pixel = color.sum(0)
+```
+
+---
+
+## Learned Descriptors
+
+Networks such as SuperPoint produce descriptors that are matched by cosine similarity — L2-normalize them first, or magnitude dominates the comparison.
+
+---
+
+## Fallback Policies
+
+Prefer the learned matcher when its inlier count clears a threshold; otherwise fall back to ORB + RANSAC. Inlier count is a cheap, honest confidence signal.
+
+---
+
+## Performance
+
+Profile before optimizing. Report p50 and p95 latency per stage; the controller feels the tail, not the mean.
+
+<Warning title="Common Misconception">
+
+Trusting a learned matcher unconditionally, or reporting mean latency only. Gate learned outputs; report percentiles.
+
+</Warning>
+
+---
+
+## Live Lab
+
+Put this lecture into practice in [Lab 14](/labs/week-14-advanced-topics) — work through its **Exercise** tab (ordering the pipeline) and argue it out in the **Workspace** reasoning tree.
+
+## Exercises
+
+### Warm-Up
+
+Implement alpha compositing for one ray with hand-made density and color values.
+
+### Core
+
+Add a learned-descriptor path with an ORB fallback to your capstone pipeline and log which path each frame takes.
+
+### Boss Level
+
+Profile your full pipeline and get p95 latency under your frame budget. Document every optimization and its gain.

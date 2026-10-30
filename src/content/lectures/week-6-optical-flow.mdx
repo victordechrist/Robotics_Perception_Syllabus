@@ -1,0 +1,85 @@
+---
+title: "Optical Flow & Motion Tracking"
+week: 6
+description: "Brightness constancy, Lucas-Kanade least squares, the aperture problem, pyramids, and Farneback dense flow."
+date: "2025-10-07"
+---
+
+# Lecture 6: Optical Flow & Motion Tracking
+
+> **The hook:** Between two video frames, every pixel moves a little. Optical flow measures that motion — and the math only works where the texture lets it.
+
+<Note title="What We Cover">
+
+- Brightness constancy and the optical flow equation
+- Lucas-Kanade: one equation per pixel, least squares per window
+- The aperture problem and the eigenvalue test
+- Pyramidal LK for large motions
+- Dense flow with Farneback, and forward-backward checks
+
+</Note>
+
+---
+
+## Brightness Constancy
+
+Assume a pixel keeps its intensity as it moves: `Ix * u + Iy * v + It = 0`. One equation, two unknowns — a single pixel cannot determine its own motion.
+
+---
+
+## Lucas-Kanade
+
+Assume all pixels in a small window share the same motion. Stack their equations into `A [u, v]^T = b` and solve the normal equations `(A^T A) [u, v]^T = A^T b`. `A^T A` is the same structure tensor that Harris used last week.
+
+```python
+ATA = A.T @ A
+ATb = A.T @ b
+min_eig = np.linalg.eigvalsh(ATA).min()
+if min_eig > tau:
+    flow = np.linalg.solve(ATA, ATb)
+```
+
+---
+
+## The Aperture Problem
+
+On a straight edge, only the motion perpendicular to the edge is observable — `A^T A` has one tiny eigenvalue. Gate on the **minimum** eigenvalue: both directions must be constrained. This is why trackers start from corners.
+
+---
+
+## Pyramids and Validation
+
+LK linearizes, so it only handles small motions. Build an image pyramid, solve at the coarsest level, and refine downward. Then track backward from frame 2 to frame 1; a reliable track returns to where it started.
+
+```python
+p1, st, _ = cv2.calcOpticalFlowPyrLK(prev, curr, p0, None, winSize=(21, 21), maxLevel=3)
+p0r, st_b, _ = cv2.calcOpticalFlowPyrLK(curr, prev, p1, None)
+fb_err = np.linalg.norm(p0 - p0r, axis=-1)
+good = (st.ravel() == 1) & (fb_err.ravel() < 1.0)
+```
+
+<Warning title="Common Misconception">
+
+Gating on the maximum eigenvalue (an edge passes) or trusting the LK status flag alone. Use the minimum eigenvalue and a forward-backward check.
+
+</Warning>
+
+---
+
+## Live Lab
+
+Put this lecture into practice in [Lab 6](/labs/week-6-optical-flow) — work through its **Exercise** tab (ordering the pipeline) and argue it out in the **Workspace** reasoning tree.
+
+## Exercises
+
+### Warm-Up
+
+Compute `A^T A` for a window on a flat region, on an edge, and on a corner. Print the eigenvalues of each.
+
+### Core
+
+Track Shi-Tomasi corners through a 100-frame video with pyramidal LK and the forward-backward check. Plot the tracks.
+
+### Boss Level
+
+Run Farneback dense flow and LK sparse flow on the same sequence. Where do they disagree, and why?
