@@ -17,7 +17,7 @@ import { useCallback, useMemo, useRef, useSyncExternalStore } from 'react';
  *   `initialValue` applies again as the updater's prev fallback.
  */
 
-const STORAGE_EVENT = 'iml:localstorage';
+const STORAGE_EVENT = 'rp:localstorage';
 
 function subscribeToKey(key: string, onChange: () => void) {
   const onStorage = (event: StorageEvent) => {
