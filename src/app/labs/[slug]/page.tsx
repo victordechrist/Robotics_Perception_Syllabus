@@ -2,6 +2,11 @@ import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { labs } from "@/data/labs";
+import { getExercise } from "@/lib/exercises";
+import { getLabTask } from "@/lib/consensus";
+import { ExercisePlayer } from "@/components/exercise/ExercisePlayer";
+import { ConsensusWorkspace } from "@/components/consensus/ConsensusWorkspace";
+import { LabTabs } from "@/components/labs/LabTabs";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -92,13 +97,14 @@ export default async function LabDetailPage({ params }: LabPageProps) {
 
       {/* Lab Content Body */}
       <main>
-        {MdxComponent ? (
-          <article className="prose dark:prose-invert max-w-none">
-            <MdxComponent />
-          </article>
-        ) : (
+        {(() => {
+          const guide = MdxComponent ? (
+            <article className="prose dark:prose-invert max-w-none">
+              <MdxComponent />
+            </article>
+          ) : (
           /* Styled "Lab materials coming soon" placeholder for non-MDX labs */
-          <Card className="border-dashed border-2 border-border/80 bg-muted/20 my-12">
+          <Card className="border-dashed border-2 border-border/80 my-12">
             <CardHeader className="text-center pb-4">
               <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground mb-2">
                 <Lock className="size-6" />
@@ -134,7 +140,23 @@ export default async function LabDetailPage({ params }: LabPageProps) {
               </div>
             </CardContent>
           </Card>
-        )}
+          );
+
+          const exercise = getExercise(slug);
+          const task = getLabTask(slug);
+
+          return (
+            <LabTabs
+              guide={guide}
+              exercise={
+                exercise ? <ExercisePlayer exercise={exercise} /> : undefined
+              }
+              workspace={
+                task ? <ConsensusWorkspace task={task} /> : undefined
+              }
+            />
+          );
+        })()}
       </main>
     </div>
   );
