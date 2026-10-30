@@ -13,6 +13,13 @@ import { week05Task } from './tasks/week05';
 import { week06Task } from './tasks/week06';
 import { week07Task } from './tasks/week07';
 import { week08Task } from './tasks/week08';
+import { week09Task } from './tasks/week09';
+import { week10Task } from './tasks/week10';
+import { week11Task } from './tasks/week11';
+import { week12Task } from './tasks/week12';
+import { week13Task } from './tasks/week13';
+import { week14Task } from './tasks/week14';
+import { week15Task } from './tasks/week15';
 
 export const LAB_TASKS: Readonly<Record<string, LabTask>> = {
   [week01Task.labSlug]: week01Task,
@@ -23,6 +30,13 @@ export const LAB_TASKS: Readonly<Record<string, LabTask>> = {
   [week06Task.labSlug]: week06Task,
   [week07Task.labSlug]: week07Task,
   [week08Task.labSlug]: week08Task,
+  [week09Task.labSlug]: week09Task,
+  [week10Task.labSlug]: week10Task,
+  [week11Task.labSlug]: week11Task,
+  [week12Task.labSlug]: week12Task,
+  [week13Task.labSlug]: week13Task,
+  [week14Task.labSlug]: week14Task,
+  [week15Task.labSlug]: week15Task,
 };
 
 /** The consensus task authored for a lab, or undefined when none exists. */
