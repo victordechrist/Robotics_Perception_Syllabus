@@ -7,6 +7,9 @@ import { getLabTask } from "@/lib/consensus";
 import { ExercisePlayer } from "@/components/exercise/ExercisePlayer";
 import { ConsensusWorkspace } from "@/components/consensus/ConsensusWorkspace";
 import { LabTabs } from "@/components/labs/LabTabs";
+import { GatedLabTab } from "@/components/labs/GatedLabTab";
+import { ThoughtTreeButton } from "@/components/labs/ThoughtTreeButton";
+import { previousVisibleLab } from "@/lib/exercises/gating";
 import { LabViewLogger } from "@/components/labs/LabViewLogger";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -95,6 +98,7 @@ export default async function LabDetailPage({ params }: LabPageProps) {
         <p className="text-base text-muted-foreground leading-relaxed">
           {lab.description}
         </p>
+        <ThoughtTreeButton labSlug={slug} />
       </header>
 
       {/* Lab Content Body */}
@@ -146,15 +150,24 @@ export default async function LabDetailPage({ params }: LabPageProps) {
 
           const exercise = getExercise(slug);
           const task = getLabTask(slug);
+          const previousLab = previousVisibleLab(slug);
 
           return (
             <LabTabs
               guide={guide}
               exercise={
-                exercise ? <ExercisePlayer exercise={exercise} /> : undefined
+                exercise ? (
+                  <GatedLabTab labSlug={slug} previousLab={previousLab} tab="exercise">
+                    <ExercisePlayer exercise={exercise} />
+                  </GatedLabTab>
+                ) : undefined
               }
               workspace={
-                task ? <ConsensusWorkspace task={task} /> : undefined
+                task ? (
+                  <GatedLabTab labSlug={slug} previousLab={previousLab} tab="workspace">
+                    <ConsensusWorkspace task={task} />
+                  </GatedLabTab>
+                ) : undefined
               }
             />
           );
