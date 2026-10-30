@@ -1,0 +1,33 @@
+---
+title: "Epipolar Geometry & Stereo Depth"
+week: 5
+description: "Rectify a stereo pair."
+---
+
+# Lab 5: Epipolar Geometry & Stereo Depth
+
+Rectify a stereo pair, compute disparity, convert to depth with `Z = f·B / d`, and back-project a point cloud.
+
+<InfoCallout title="Prerequisites">
+Review Lecture 5 (Epipolar Geometry & Stereo Vision) — the concepts below build directly on it.
+</InfoCallout>
+
+## Warm-Up
+
+With `f = 700 px`, `B = 0.12 m`, tabulate depth for disparities 1–100 px. Where does one pixel of error cost a meter?
+
+## Core
+
+Run the stereo pipeline: `stereoRectify` → `initUndistortRectifyMap` + `remap` → `StereoBM` → divide by 16 → depth map → point cloud. Mask invalid disparities before back-projecting.
+
+## Boss Level
+
+Estimate `F` from matched features, draw the epipolar lines for 20 random points, and measure their distance to the true correspondences.
+
+<Warning title="Watch Out">
+Inverting the depth formula as `Z = d / (f·B)` — depth *falls* as disparity grows.
+</Warning>
+
+## Deliverable
+
+Work through the tiers above, then apply the same pipeline in this lab's **Exercise** tab (ordering the steps) and argue your design in the **Workspace** reasoning tree. Save your code and figures — they feed your capstone.

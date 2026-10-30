@@ -1,0 +1,33 @@
+---
+title: "Filtering, Edges & Corners"
+week: 3
+description: "Build the gradient pipeline in the right order — smooth first."
+---
+
+# Lab 3: Filtering, Edges & Corners
+
+Build the gradient pipeline in the right order — smooth first, differentiate second — then detect edges with Canny and corners with Harris.
+
+<InfoCallout title="Prerequisites">
+Review Lecture 3 (Image Processing & Edge Detection) — the concepts below build directly on it.
+</InfoCallout>
+
+## Warm-Up
+
+Apply Sobel to a noisy image with and without Gaussian smoothing; count strong-edge pixels in each result.
+
+## Core
+
+Implement the Canny stages yourself: smooth → gradient magnitude/orientation → non-maximum suppression → hysteresis. Compare against `cv2.Canny` pixel-for-pixel.
+
+## Boss Level
+
+Compute the structure tensor per pixel and the Harris response. Plot the eigenvalue scatter: flat regions vs edges vs corners.
+
+<Warning title="Watch Out">
+Running hysteresis before non-maximum suppression — hysteresis needs one-pixel-wide edges to trace.
+</Warning>
+
+## Deliverable
+
+Work through the tiers above, then apply the same pipeline in this lab's **Exercise** tab (ordering the steps) and argue your design in the **Workspace** reasoning tree. Save your code and figures — they feed your capstone.

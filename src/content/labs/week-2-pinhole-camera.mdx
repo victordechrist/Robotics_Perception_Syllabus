@@ -1,0 +1,33 @@
+---
+title: "Pinhole Camera & Lens Distortion"
+week: 2
+description: "Implement the full projection chain — world frame to pixel — and see exactly where depth is lost."
+---
+
+# Lab 2: Pinhole Camera & Lens Distortion
+
+Implement the full projection chain — world frame to pixel — and see exactly where depth is lost, and what lens distortion does to straight lines.
+
+<InfoCallout title="Prerequisites">
+Review Lecture 2 (Pinhole Cameras & Projective Geometry) — the concepts below build directly on it.
+</InfoCallout>
+
+## Warm-Up
+
+Project eight cube corners 4 m in front of a camera (`fx = fy = 500`, `cx = cy = 320`). Verify the two corners on the optical axis map to the principal point.
+
+## Core
+
+Implement `project(P_world, R, t, K, dist)`: transform to camera frame, perspective-divide, apply Brown-Conrady distortion in normalized coordinates, multiply by `K`. Verify on synthetic points with known answers.
+
+## Boss Level
+
+Add radial distortion (`k1 = -0.25`) to a synthetic grid and visualize how straight lines bow. Then implement `undistortPoints` numerically and show it straightens them back.
+
+<Warning title="Watch Out">
+Distorting in pixel space instead of normalized coordinates — the coefficients were fit for a scale-free input.
+</Warning>
+
+## Deliverable
+
+Work through the tiers above, then apply the same pipeline in this lab's **Exercise** tab (ordering the steps) and argue your design in the **Workspace** reasoning tree. Save your code and figures — they feed your capstone.

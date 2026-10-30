@@ -1,0 +1,33 @@
+---
+title: "ROS 2 Integration"
+week: 13
+description: "Package your perception code as a ROS 2 node: lifecycle."
+---
+
+# Lab 13: ROS 2 Integration
+
+Package your perception code as a ROS 2 node: lifecycle, typed topics, tf2 transforms, and clean shutdown.
+
+<InfoCallout title="Prerequisites">
+Review Lecture 13 (ROS 2 Integration & System Architecture) — the concepts below build directly on it.
+</InfoCallout>
+
+## Warm-Up
+
+Write a talker/listener pair. Inspect them with `ros2 topic list`, `echo`, and `hz`.
+
+## Core
+
+Wrap your feature matcher as a node: subscribe to a camera topic, process in the callback, publish match counts. Verify lifecycle order — init, node, channels, spin.
+
+## Boss Level
+
+Publish a static `base_link → camera` transform and use tf2 to express detections in the map frame at the image timestamp.
+
+<Warning title="Watch Out">
+Replacing `rclpy.spin` with a sleep loop — callbacks only run while the executor spins.
+</Warning>
+
+## Deliverable
+
+Work through the tiers above, then apply the same pipeline in this lab's **Exercise** tab (ordering the steps) and argue your design in the **Workspace** reasoning tree. Save your code and figures — they feed your capstone.

@@ -1,0 +1,33 @@
+---
+title: "NeRF & Learned Perception"
+week: 14
+description: "Explore learned perception: volume-render a learned field."
+---
+
+# Lab 14: NeRF & Learned Perception
+
+Explore learned perception: volume-render a learned field, match with learned descriptors, and build a fallback policy that keeps classical geometry as a safety net.
+
+<InfoCallout title="Prerequisites">
+Review Lecture 14 (Advanced Topics & Capstone Polish) — the concepts below build directly on it.
+</InfoCallout>
+
+## Warm-Up
+
+Implement alpha compositing for one ray by hand: sample t, apply `T·α` weights, and composite to a color.
+
+## Core
+
+Add a learned-descriptor path (L2-normalized, cosine matching) to your pipeline, gated by inlier count with an ORB+RANSAC fallback. Log which path each frame takes.
+
+## Boss Level
+
+Profile your full pipeline stage by stage. Report p50/p95 latency and document the optimizations that brought the tail under budget.
+
+<Warning title="Watch Out">
+Querying the network after compositing — sampling defines *where* the field is queried; compositing integrates along the ray.
+</Warning>
+
+## Deliverable
+
+Work through the tiers above, then apply the same pipeline in this lab's **Exercise** tab (ordering the steps) and argue your design in the **Workspace** reasoning tree. Save your code and figures — they feed your capstone.
