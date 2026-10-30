@@ -1,0 +1,84 @@
+---
+title: "Introduction to Robot Perception & Spatial Geometry"
+week: 1
+description: "Foundational concepts in spatial AI, camera perception pipelines, coordinate frame transformations, 2D/3D rotation matrices, and SE(3) homogeneous coordinates."
+date: "2025-09-02"
+---
+
+# Lecture 1: Introduction to Robot Perception & Spatial Geometry
+
+Welcome to CS 289 / ROB 201: Robotics Perception! In this opening lecture, we lay the foundational mathematical concepts that enable mobile robots to perceive, interpret, and navigate through physical space using vision and state estimation algorithms.
+
+<Note title="Lecture Overview">
+Perception is the bridge between raw sensor observations (photons, range measurements, IMU accelerations) and semantic state representations needed for autonomous decision-making.
+</Note>
+
+## The Robot Perception Pipeline
+
+Modern spatial AI architectures convert raw sensor feeds into accurate 3D geometry and state estimates through a multi-stage pipeline:
+
+1. **Sensing & Preprocessing**: Raw camera image frames, LiDAR point clouds, and IMU measurements are captured and cleaned (e.g., lens distortion correction and noise filtering).
+2. **Feature Extraction & Association**: Keypoints, edges, and semantic descriptors are identified across consecutive time steps.
+3. **Spatial Geometry Reconstruction**: Relative transformations and 3D point estimates are triangulated using epipolar constraints and camera geometry.
+4. **State Estimation & Optimization**: Extended Kalman Filters (EKF) and Factor Graph Optimization fuse visual odometry with inertial telemetry to build globally consistent maps.
+
+---
+
+## Coordinate Frames & Transformations
+
+In robotics, every sensor, actuator, and world landmark has its own coordinate reference frame. To reason about distances and orientations, we express vector locations relative to specific reference frames.
+
+Let `p^B` represent a point location measured in reference frame `B`. To express this point in reference frame `A`, we apply a rigid transformation consisting of a rotation matrix `R_{A->B}` in `SO(3)` and a translation vector `t_{A->B}` in `R^3`:
+
+```
+p^A = R_{A->B} * p^B + t_{A->B}
+```
+
+### 2D Rotation Matrices SO(2)
+
+For planar mobile robots, rotations occur around the vertical z-axis by angle `theta`:
+
+```python
+import numpy as np
+
+def rotation_matrix_2d(theta: float) -> np.ndarray:
+    """Computes SO(2) rotation matrix for angle theta in radians."""
+    c, s = np.cos(theta), np.sin(theta)
+    return np.array([
+        [c, -s],
+        [s,  c]
+    ])
+```
+
+<Tip>
+Remember that rotation matrices in Special Orthogonal groups `SO(n)` are orthogonal, meaning `R^T * R = I` and `det(R) = +1`. The inverse transformation is simply the matrix transpose `R^-1 = R^T`.
+</Tip>
+
+### 3D Homogeneous Coordinates SE(3)
+
+To combine rotation and translation into a single linear operator, we represent poses as 4x4 homogeneous transformation matrices belonging to the Special Euclidean group `SE(3)`:
+
+```
+T_{A->B} = [   R    t ]
+           [ 01x3   1 ]
+```
+
+Using homogeneous point vectors `p_h = [x, y, z, 1]^T`, pose compounding simplifies to direct matrix multiplication:
+
+```
+p^A = T_{A->B} * p^B
+T_{A->C} = T_{A->B} * T_{B->C}
+```
+
+<Warning title="Pose Compounding Order">
+Matrix multiplication is non-commutative (`A * B != B * A`). Compounding transformations in the wrong sequence is one of the most common bugs in robotics software!
+</Warning>
+
+---
+
+## Key Takeaways
+
+- Perception bridges raw sensor signals to spatial world models.
+- Coordinate transformations require strict frame book-keeping.
+- Homogeneous matrices `SE(3)` allow elegant chaining of 3D rigid poses.
+- Always verify that rotation matrices remain valid `SO(3)` elements.
