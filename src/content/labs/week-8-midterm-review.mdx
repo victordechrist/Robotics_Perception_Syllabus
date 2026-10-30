@@ -1,0 +1,33 @@
+---
+title: "Midterm Pipeline Audit"
+week: 8
+description: "Assemble weeks 1–7 into one pipeline and learn to diagnose it: every stage has a precondition and a numeric signature when it breaks.."
+---
+
+# Lab 8: Midterm Pipeline Audit
+
+Assemble weeks 1–7 into one pipeline and learn to diagnose it: every stage has a precondition and a numeric signature when it breaks.
+
+<InfoCallout title="Prerequisites">
+Review Lecture 8 (Midterm Review & Project Checkpoint) — the concepts below build directly on it.
+</InfoCallout>
+
+## Warm-Up
+
+Draw the full pipeline as a dependency graph. For each edge, write the precondition the downstream stage assumes.
+
+## Core
+
+Run the stereo pipeline end to end on a provided pair and report depth coverage (`isfinite` + range checks). Then break one stage on purpose — skip undistortion, unpair calibration files — and record how coverage and error shift.
+
+## Boss Level
+
+You are handed a broken run: its disparity map, match visualization, and pose trace. Identify the failing stage from the signatures alone and justify the diagnosis.
+
+<Warning title="Watch Out">
+Estimating pose on all matches — without the RANSAC gate, a single outlier warps the essential matrix.
+</Warning>
+
+## Deliverable
+
+Work through the tiers above, then apply the same pipeline in this lab's **Exercise** tab (ordering the steps) and argue your design in the **Workspace** reasoning tree. Save your code and figures — they feed your capstone.
