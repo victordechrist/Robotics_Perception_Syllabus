@@ -105,6 +105,43 @@ npm run start
 
 ---
 
+
+---
+
+### 3. Interactive Content: Exercises & Reasoning Trees
+
+Each lab can carry three tabs — **Guide** (the MDX), **Exercise** (drag-and-drop
+ordering puzzle), and **Workspace** (consensus reasoning tree). The interactive
+content lives in two content-only files per lab:
+
+- `src/lib/exercises/labs/weekNN.ts` — a `LabExercise`: ordered `steps`, each
+  with `solution` (block ids in correct order) and `blocks` (one `isDistractor`
+  block that encodes a real student misconception for that week).
+- `src/lib/consensus/tasks/weekNN.ts` — a `LabTask`: `scenes` (narration +
+  `goldNodeIds` + `hints`) and a `goldTree` (`nodes` + `edges`, `edges`
+  REQUIRED — `elaborates` / `depends-on`).
+
+Both files must be **registered**: import them in `src/lib/exercises/index.ts`
+and `src/lib/consensus/index.ts` and add their `labSlug` entries to the
+registry maps. The lab's tabs, progress badges, gating, and exports pick the
+content up automatically from the registry — no page edits needed.
+
+Progress, trees, and the activity log live in `localStorage` under the
+`rp:v1` prefix (`src/lib/storage.ts`). There is no backend: nothing is sent
+to a server, nothing is executed, and solution ordering never appears in the
+DOM or the activity payloads.
+
+Authoring rules:
+
+- Keep distractors *plausible* — each one should encode a misconception a
+  student could actually hold that week (e.g. distorting in pixel space
+  instead of normalized space).
+- `goldNodeIds` per scene should cover roughly the goal/subgoal/operator/
+  evidence ladder for that scene.
+- New `ActivityType` values go in `src/lib/activity/types.ts` — every type
+  used anywhere in the code MUST be in the union or the build breaks.
+- `kind` values in tree nodes: `goal | subgoal | operator | evidence`.
+
 ## 🌐 Zero-Config Vercel Deployment
 
 This project requires **zero environment variables** or database connections. It can be deployed directly to Vercel:

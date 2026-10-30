@@ -19,6 +19,7 @@ const primaryLinks = [
   { href: "/syllabus", label: "Syllabus" },
   { href: "/labs", label: "Labs" },
   { href: "/progress", label: "Progress" },
+  { href: "https://github.com/victordechrist/slides/tree/main/introduction%20to%20robotics%20perception", label: "Slides", external: true },
   { href: "/resources", label: "Resources" },
   { href: "/about", label: "About" },
 ];
@@ -39,6 +40,7 @@ const allMobileLinks = [
   { href: "/staff", label: "Staff" },
   { href: "/assessments", label: "Assessments" },
   { href: "/lectures", label: "Lectures" },
+  { href: "https://github.com/victordechrist/slides/tree/main/introduction%20to%20robotics%20perception", label: "Slides", external: true },
 ];
 
 export function Navbar() {
@@ -78,6 +80,19 @@ export function Navbar() {
               link.href === "/"
                 ? pathname === "/"
                 : pathname === link.href || pathname.startsWith(link.href + "/");
+            if (link.external) {
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-md transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                >
+                  {link.label}
+                </a>
+              );
+            }
             return (
               <Link
                 key={link.href}
@@ -158,6 +173,20 @@ export function Navbar() {
                 link.href === "/"
                   ? pathname === "/"
                   : pathname === link.href || pathname.startsWith(link.href + "/");
+              if (link.external) {
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-3 py-2 rounded-md text-sm font-medium transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
+                  >
+                    {link.label}
+                  </a>
+                );
+              }
               return (
                 <Link
                   key={link.href}
