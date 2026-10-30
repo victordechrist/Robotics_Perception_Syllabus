@@ -2,6 +2,15 @@ import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { labs } from "@/data/labs";
+import { getExercise } from "@/lib/exercises";
+import { getLabTask } from "@/lib/consensus";
+import { ExercisePlayer } from "@/components/exercise/ExercisePlayer";
+import { ConsensusWorkspace } from "@/components/consensus/ConsensusWorkspace";
+import { LabTabs } from "@/components/labs/LabTabs";
+import { GatedLabTab } from "@/components/labs/GatedLabTab";
+import { ThoughtTreeButton } from "@/components/labs/ThoughtTreeButton";
+import { previousVisibleLab } from "@/lib/exercises/gating";
+import { LabViewLogger } from "@/components/labs/LabViewLogger";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -44,7 +53,8 @@ export default async function LabDetailPage({ params }: LabPageProps) {
   }
 
   return (
-    <div className="container max-w-4xl py-8 space-y-8">
+    <div className="container mx-auto max-w-4xl px-4 sm:px-6 py-8 space-y-8">
+      <LabViewLogger labSlug={slug} />
       {/* Top navigation back link */}
       <div>
         <Link
@@ -88,17 +98,19 @@ export default async function LabDetailPage({ params }: LabPageProps) {
         <p className="text-base text-muted-foreground leading-relaxed">
           {lab.description}
         </p>
+        <ThoughtTreeButton labSlug={slug} />
       </header>
 
       {/* Lab Content Body */}
       <main>
-        {MdxComponent ? (
-          <article className="prose dark:prose-invert max-w-none">
-            <MdxComponent />
-          </article>
-        ) : (
+        {(() => {
+          const guide = MdxComponent ? (
+            <article className="prose dark:prose-invert max-w-none">
+              <MdxComponent />
+            </article>
+          ) : (
           /* Styled "Lab materials coming soon" placeholder for non-MDX labs */
-          <Card className="border-dashed border-2 border-border/80 bg-muted/20 my-12">
+          <Card className="border-dashed border-2 border-border/80 my-12">
             <CardHeader className="text-center pb-4">
               <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground mb-2">
                 <Lock className="size-6" />
@@ -134,7 +146,32 @@ export default async function LabDetailPage({ params }: LabPageProps) {
               </div>
             </CardContent>
           </Card>
-        )}
+          );
+
+          const exercise = getExercise(slug);
+          const task = getLabTask(slug);
+          const previousLab = previousVisibleLab(slug);
+
+          return (
+            <LabTabs
+              guide={guide}
+              exercise={
+                exercise ? (
+                  <GatedLabTab labSlug={slug} previousLab={previousLab} tab="exercise">
+                    <ExercisePlayer exercise={exercise} />
+                  </GatedLabTab>
+                ) : undefined
+              }
+              workspace={
+                task ? (
+                  <GatedLabTab labSlug={slug} previousLab={previousLab} tab="workspace">
+                    <ConsensusWorkspace task={task} />
+                  </GatedLabTab>
+                ) : undefined
+              }
+            />
+          );
+        })()}
       </main>
     </div>
   );

@@ -1,0 +1,91 @@
+---
+title: "Image Processing & Edge Detection"
+week: 3
+description: "Convolution and smoothing, image gradients with Sobel, the Canny pipeline, and Harris / FAST corner detection."
+date: "2025-09-16"
+---
+
+# Lecture 3: Image Processing & Edge Detection
+
+> **The hook:** An edge is where the image changes fastest — but noise also changes fast. Every edge detector is a negotiation between those two facts.
+
+<Note title="What We Cover">
+
+- Convolution, kernels, and Gaussian smoothing
+- Image gradients: Sobel, magnitude and orientation
+- The Canny pipeline: smooth → gradient → NMS → hysteresis
+- Corners: the structure tensor and the Harris response
+- FAST: corners at real-time speed
+
+</Note>
+
+---
+
+## Convolution and Smoothing
+
+Convolution slides a kernel over the image and takes a weighted sum at each pixel. A Gaussian kernel suppresses high-frequency noise. Derivatives amplify noise, so smoothing must come **before** differentiation.
+
+```python
+import cv2
+
+blur = cv2.GaussianBlur(gray, (5, 5), sigmaX=1.4)
+gx = cv2.Sobel(blur, cv2.CV_64F, 1, 0, ksize=3)
+gy = cv2.Sobel(blur, cv2.CV_64F, 0, 1, ksize=3)
+mag = np.hypot(gx, gy)
+angle = np.arctan2(gy, gx)
+```
+
+---
+
+## The Canny Pipeline
+
+Canny is four stages in a fixed order: Gaussian smoothing, gradient magnitude and orientation, non-maximum suppression (thin each edge to one pixel along the gradient direction), then hysteresis thresholding (strong edges seed, weak edges survive only if connected).
+
+```python
+edges = cv2.Canny(gray, threshold1=50, threshold2=150)
+```
+
+---
+
+## Corners and the Structure Tensor
+
+At a corner, the image changes in **every** direction. The structure tensor `M` sums gradient outer products over a window. Its two eigenvalues tell the story: both small → flat, one large → edge, both large → corner. Harris avoids the eigendecomposition with `R = det(M) - k * trace(M)^2`.
+
+```python
+Ixx = cv2.GaussianBlur(gx * gx, (5, 5), 1)
+Iyy = cv2.GaussianBlur(gy * gy, (5, 5), 1)
+Ixy = cv2.GaussianBlur(gx * gy, (5, 5), 1)
+R = (Ixx * Iyy - Ixy**2) - 0.04 * (Ixx + Iyy)**2
+```
+
+---
+
+## FAST
+
+FAST tests a ring of 16 pixels around a candidate: if a contiguous arc is all brighter or all darker than the center by a threshold, it is a corner. It is not rotation-aware by itself — ORB adds orientation next week.
+
+<Warning title="Common Misconception">
+
+Running hysteresis before non-maximum suppression, or flipping the Harris score sign. NMS thins first; hysteresis decides which thin edges survive. Harris `R` is large and positive only at corners.
+
+</Warning>
+
+---
+
+## Live Lab
+
+Put this lecture into practice in [Lab 3](/labs/week-3-image-processing) — work through its **Exercise** tab (ordering the pipeline) and argue it out in the **Workspace** reasoning tree.
+
+## Exercises
+
+### Warm-Up
+
+Apply Sobel to a raw noisy image and to a Gaussian-blurred copy. Count the pixels with magnitude above a fixed threshold in each.
+
+### Core
+
+Compute the Harris response on a checkerboard image and plot the top 50 responses. Do they land on the inner corners?
+
+### Boss Level
+
+Implement non-maximum suppression yourself by quantizing gradient angles into four bins. Compare your edge map to `cv2.Canny`.

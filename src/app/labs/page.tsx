@@ -6,6 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { labs, Lab } from "@/data/labs";
+import { getExercise } from "@/lib/exercises";
+import { getLabTask } from "@/lib/consensus";
+import { previousVisibleLab } from "@/lib/exercises/gating";
+import { ExerciseProgressBadge } from "@/components/labs/ExerciseProgressBadge";
+import { WorkspaceProgressBadge } from "@/components/labs/WorkspaceProgressBadge";
+import { LabLockBadge } from "@/components/labs/LabLockBadge";
 import { capstoneMilestones } from "@/data/assessments";
 import { cn } from "@/lib/utils";
 import { ArrowRight, CheckCircle2, Code2, Flag, Lock, Rocket, Sparkles, Terminal } from "lucide-react";
@@ -154,10 +160,31 @@ export default function LabsPage() {
                       <CardDescription className="text-xs leading-relaxed text-muted-foreground line-clamp-3">
                         {lab.description}
                       </CardDescription>
+                      {(getExercise(lab.slug) || getLabTask(lab.slug)) && (
+                        <div className="flex flex-wrap items-center gap-2 pt-1">
+                          {getExercise(lab.slug) && (
+                            <ExerciseProgressBadge
+                              labSlug={lab.slug}
+                              steps={getExercise(lab.slug)!.steps}
+                            />
+                          )}
+                          {getLabTask(lab.slug) && (
+                            <WorkspaceProgressBadge
+                              labSlug={lab.slug}
+                              goldTotal={getLabTask(lab.slug)!.goldTree.nodes.length}
+                            />
+                          )}
+                          <LabLockBadge
+                            labSlug={lab.slug}
+                            previousSlug={previousVisibleLab(lab.slug)?.slug}
+                            previousTitle={previousVisibleLab(lab.slug)?.title}
+                          />
+                        </div>
+                      )}
                     </CardHeader>
 
                     <CardFooter className="pt-3 border-t border-border/40">
-                      {lab.hasMdx ? (
+                      {(lab.hasMdx || getExercise(lab.slug) || getLabTask(lab.slug)) ? (
                         <Link
                           href={`/labs/${lab.slug}`}
                           className={cn(
