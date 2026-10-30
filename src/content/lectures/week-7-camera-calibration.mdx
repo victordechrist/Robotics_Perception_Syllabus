@@ -1,0 +1,87 @@
+---
+title: "Camera Calibration & Target Detection"
+week: 7
+description: "Chessboard and ArUco detection, Zhang calibration, cv2.calibrateCamera, and reprojection error as the honest verification."
+date: "2025-10-14"
+---
+
+# Lecture 7: Camera Calibration & Target Detection
+
+> **The hook:** Every metric quantity you compute from an image — depth, pose, distance — is only as good as your calibration. This week you earn your K.
+
+<Note title="What We Cover">
+
+- Calibration targets: chessboards and ArUco markers
+- Object points vs image points
+- Zhang method and what calibrateCamera minimizes
+- Reprojection error, per view
+- View diversity and calibration quality
+
+</Note>
+
+---
+
+## Targets and Correspondences
+
+A calibration board has corners at exactly known positions. Place them on the `z = 0` plane in board units, and pair each detected pixel with its board point, index for index.
+
+```python
+objp = np.zeros((rows * cols, 3), np.float32)
+objp[:, :2] = np.mgrid[0:cols, 0:rows].T.reshape(-1, 2) * square_size
+
+ok, corners = cv2.findChessboardCorners(gray, (cols, rows))
+if ok:
+    corners = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
+    objpoints.append(objp)
+    imgpoints.append(corners)
+```
+
+---
+
+## Solving
+
+`cv2.calibrateCamera` jointly estimates `K`, distortion, and each view pose by minimizing reprojection error — the pixel distance between detected corners and where the model predicts them. It returns the RMS error first.
+
+```python
+rms, K, dist, rvecs, tvecs = cv2.calibrateCamera(
+    objpoints, imgpoints, gray.shape[::-1], None, None)
+```
+
+---
+
+## Verifying by Reprojection
+
+Reproject each view and measure the mean error. A healthy calibration sits below about 0.5 px; a single outlier view usually means a bad detection, and should be removed.
+
+```python
+for i in range(len(objpoints)):
+    proj, _ = cv2.projectPoints(objpoints[i], rvecs[i], tvecs[i], K, dist)
+    err = cv2.norm(imgpoints[i], proj, cv2.NORM_L2) / len(proj)
+    print(i, round(err, 3))
+```
+
+<Warning title="Common Misconception">
+
+Swapping rows and columns in the object grid, or unpacking the return as `K, dist, ...` and treating the RMS number as a matrix. Correspondence order and return order both matter.
+
+</Warning>
+
+---
+
+## Live Lab
+
+Put this lecture into practice in [Lab 7](/labs/week-7-camera-calibration) — work through its **Exercise** tab (ordering the pipeline) and argue it out in the **Workspace** reasoning tree.
+
+## Exercises
+
+### Warm-Up
+
+Detect chessboard corners in 15 images. How many succeed, and what do the failures have in common?
+
+### Core
+
+Calibrate your camera, report `K`, distortion, and per-view reprojection error, and remove the worst view. How much does the RMS improve?
+
+### Boss Level
+
+Calibrate twice: once with only fronto-parallel views, once with tilted views near the image edges. Compare `k1` and `k2` between the two.

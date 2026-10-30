@@ -1,0 +1,84 @@
+---
+title: "Epipolar Geometry & Stereo Vision"
+week: 5
+description: "Epipolar constraint, essential and fundamental matrices, rectification, disparity, and depth from Z = f·B / d."
+date: "2025-09-30"
+---
+
+# Lecture 5: Epipolar Geometry & Stereo Vision
+
+> **The hook:** Your two eyes see slightly different pictures. The difference — disparity — is depth, and it is the oldest trick in robot perception.
+
+<Note title="What We Cover">
+
+- The epipolar constraint and epipolar lines
+- Essential vs fundamental matrix
+- Stereo rectification
+- Disparity and block matching
+- Depth Z = f·B / d and back-projection to point clouds
+
+</Note>
+
+---
+
+## The Epipolar Constraint
+
+A point seen in the left image must lie on a specific line in the right image — the epipolar line. Algebraically, `x2^T F x1 = 0` in pixels, or `x2^T E x1 = 0` in normalized coordinates, with `E = K2^T F K1`. This turns a 2D search into a 1D search.
+
+---
+
+## Rectification
+
+Rectification warps both images so every epipolar line becomes a horizontal scanline. After rectification, matching a pixel means searching along the same row only — and disparity is a simple horizontal offset.
+
+```python
+R1, R2, P1, P2, Q, _, _ = cv2.stereoRectify(K1, d1, K2, d2, size, R, T)
+map1x, map1y = cv2.initUndistortRectifyMap(K1, d1, R1, P1, size, cv2.CV_32FC1)
+left_r = cv2.remap(left, map1x, map1y, cv2.INTER_LINEAR)
+```
+
+---
+
+## Disparity to Depth
+
+Block matching compares small windows along each row. OpenCV StereoBM returns fixed-point disparity scaled by 16. Depth is inversely proportional to disparity: `Z = f * B / d`. Small disparity means far away — and very sensitive to one-pixel errors.
+
+```python
+stereo = cv2.StereoBM_create(numDisparities=64, blockSize=15)
+disp = stereo.compute(left_r, right_r).astype(np.float32) / 16.0
+valid = disp > 0
+Z = np.zeros_like(disp)
+Z[valid] = f * B / disp[valid]
+```
+
+---
+
+## Back-Projection
+
+With depth known, each pixel lifts back to 3D: `X = (u - cx) * Z / fx`, `Y = (v - cy) * Z / fy`. Mask invalid disparities before back-projecting, or the cloud fills with points at infinity.
+
+<Warning title="Common Misconception">
+
+Writing `Z = d / (f * B)` or dividing by depth when back-projecting. Depth falls as disparity grows; back-projection multiplies by `Z`.
+
+</Warning>
+
+---
+
+## Live Lab
+
+Put this lecture into practice in [Lab 5](/labs/week-5-stereo-vision) — work through its **Exercise** tab (ordering the pipeline) and argue it out in the **Workspace** reasoning tree.
+
+## Exercises
+
+### Warm-Up
+
+With `f = 700 px` and `B = 0.12 m`, compute depth for disparities 1, 10, and 70 px. How much does a one-pixel error matter at each?
+
+### Core
+
+Rectify a stereo pair, compute a disparity map, convert it to depth, and back-project to a colored point cloud.
+
+### Boss Level
+
+Estimate the fundamental matrix from matches with RANSAC, draw epipolar lines, and verify that matched points lie within one pixel of their lines.

@@ -1,0 +1,81 @@
+---
+title: "Particle Filtering & Monte Carlo Localization"
+week: 11
+description: "Non-Gaussian belief, motion and measurement models, importance weights, resampling, and the MCL algorithm."
+date: "2025-11-11"
+---
+
+# Lecture 11: Particle Filtering & Monte Carlo Localization
+
+> **The hook:** A robot wakes up in one of three identical corridors. A Gaussian cannot represent "here, or here, or here". A thousand particles can.
+
+<Note title="What We Cover">
+
+- Why Gaussians fail: multimodal belief
+- Particles as hypotheses
+- Motion model with per-particle noise
+- Measurement likelihood and normalized weights
+- Resampling, degeneracy, and effective sample size
+
+</Note>
+
+---
+
+## Propagate
+
+Each particle is a full hypothesis of the robot pose. Push each one through the motion model with its own noise draw, so the cloud spreads the way the true uncertainty does.
+
+```python
+X = np.array([motion_model(x, u) for x in X])
+X += np.random.normal(0, sigma_proc, X.shape)
+```
+
+---
+
+## Weight
+
+Score each particle by how well it explains the measurement, `p(z | x_i)`, then normalize the weights to sum to one.
+
+```python
+w = np.array([likelihood(z, x) for x in X])
+w /= w.sum()
+```
+
+---
+
+## Resample
+
+Without resampling, a few particles end up with all the weight. Resample in proportion to weight and reset to uniform; monitor the effective sample size `1 / sum(w**2)`.
+
+```python
+n_eff = 1.0 / np.sum(w**2)
+if n_eff < N / 2:
+    idx = np.random.choice(N, N, p=w)
+    X, w = X[idx], np.full(N, 1.0 / N)
+```
+
+<Warning title="Common Misconception">
+
+Pushing only the mean, picking the argmax particle as the "filter", or never resampling. Each is a different way to collapse the belief.
+
+</Warning>
+
+---
+
+## Live Lab
+
+Put this lecture into practice in [Lab 11](/labs/week-11-particle-filter) — work through its **Exercise** tab (ordering the pipeline) and argue it out in the **Workspace** reasoning tree.
+
+## Exercises
+
+### Warm-Up
+
+Initialize 1,000 particles uniformly over a 10 m corridor and visualize the cloud after one measurement.
+
+### Core
+
+Implement MCL on a 2D map with a range sensor. Show the cloud converging from global uncertainty.
+
+### Boss Level
+
+Kidnap the robot mid-run. Add random particle injection and measure how many steps recovery takes.
