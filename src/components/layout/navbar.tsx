@@ -18,6 +18,7 @@ const primaryLinks = [
   { href: "/", label: "Home" },
   { href: "/syllabus", label: "Syllabus" },
   { href: "/labs", label: "Labs" },
+  { href: "/progress", label: "Progress" },
   { href: "/resources", label: "Resources" },
   { href: "/about", label: "About" },
 ];
@@ -32,6 +33,7 @@ const allMobileLinks = [
   { href: "/", label: "Home" },
   { href: "/syllabus", label: "Syllabus" },
   { href: "/labs", label: "Labs" },
+  { href: "/progress", label: "Progress" },
   { href: "/resources", label: "Resources" },
   { href: "/about", label: "About" },
   { href: "/staff", label: "Staff" },
