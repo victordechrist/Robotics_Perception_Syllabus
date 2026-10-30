@@ -1,0 +1,33 @@
+---
+title: "Optical Flow & Tracking"
+week: 6
+description: "Track corners through a video with pyramidal Lucas-Kanade."
+---
+
+# Lab 6: Optical Flow & Tracking
+
+Track corners through a video with pyramidal Lucas-Kanade, gate tracks by the structure-tensor eigenvalues, and validate with forward-backward checks.
+
+<InfoCallout title="Prerequisites">
+Review Lecture 6 (Optical Flow & Motion Tracking) — the concepts below build directly on it.
+</InfoCallout>
+
+## Warm-Up
+
+Compute `A^T A` eigenvalues for windows on a flat region, an edge, and a corner. Which can constrain two components of flow?
+
+## Core
+
+Track Shi-Tomasi corners with `calcOpticalFlowPyrLK` over 100 frames. Keep only tracks passing the minimum-eigenvalue gate AND the forward-backward check (< 1 px). Draw the surviving trails.
+
+## Boss Level
+
+Compare sparse LK to dense Farneback on the same clip. Where does each fail — large motion, motion blur, textureless regions?
+
+<Warning title="Watch Out">
+Gating on the maximum eigenvalue — that accepts edges, where only perpendicular motion is observable.
+</Warning>
+
+## Deliverable
+
+Work through the tiers above, then apply the same pipeline in this lab's **Exercise** tab (ordering the steps) and argue your design in the **Workspace** reasoning tree. Save your code and figures — they feed your capstone.

@@ -1,0 +1,33 @@
+---
+title: "Monte Carlo Localization"
+week: 11
+description: "Localize a robot with a particle filter: propagate hypotheses."
+---
+
+# Lab 11: Monte Carlo Localization
+
+Localize a robot with a particle filter: propagate hypotheses, weight by likelihood, and resample before degeneracy.
+
+<InfoCallout title="Prerequisites">
+Review Lecture 11 (Particle Filtering & Monte Carlo Localization) — the concepts below build directly on it.
+</InfoCallout>
+
+## Warm-Up
+
+Scatter 1,000 particles uniformly over a map and plot the cloud. Then re-weight by a single range measurement and watch it concentrate.
+
+## Core
+
+Implement MCL: per-particle motion + noise, likelihood weighting, normalization, resampling gated by `N_eff = 1/Σw²`. Show global localization converging.
+
+## Boss Level
+
+Kidnap the robot mid-run (teleport it without telling the filter). Add random-particle injection and measure steps to recovery.
+
+<Warning title="Watch Out">
+Never resampling — within a few steps one particle holds all weight and the other 999 are wasted.
+</Warning>
+
+## Deliverable
+
+Work through the tiers above, then apply the same pipeline in this lab's **Exercise** tab (ordering the steps) and argue your design in the **Workspace** reasoning tree. Save your code and figures — they feed your capstone.

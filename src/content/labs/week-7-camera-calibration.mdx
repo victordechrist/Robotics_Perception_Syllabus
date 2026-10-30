@@ -1,0 +1,33 @@
+---
+title: "Camera Calibration"
+week: 7
+description: "Calibrate a real camera from chessboard images: build exact correspondences."
+---
+
+# Lab 7: Camera Calibration
+
+Calibrate a real camera from chessboard images: build exact correspondences, solve with `calibrateCamera`, and verify with per-view reprojection error.
+
+<InfoCallout title="Prerequisites">
+Review Lecture 7 (Camera Calibration & Target Detection) — the concepts below build directly on it.
+</InfoCallout>
+
+## Warm-Up
+
+Run `findChessboardCorners` on 15+ images covering the full frame. Record which views fail and why (blur, glare, occluded corners).
+
+## Core
+
+Build `objpoints`/`imgpoints` with z = 0 board coordinates, run `calibrateCamera`, and unpack `(rms, K, dist, rvecs, tvecs)` in that order. Report per-view reprojection error and drop outlier views.
+
+## Boss Level
+
+Undistort your test images with the solved intrinsics. Do straight lines near the image edges straighten? Compare a calibration from fronto-parallel views vs tilted views.
+
+<Warning title="Watch Out">
+Swapped rows/cols in the object grid corrupts every correspondence — the corner order `findChessboardCorners` returns is fixed.
+</Warning>
+
+## Deliverable
+
+Work through the tiers above, then apply the same pipeline in this lab's **Exercise** tab (ordering the steps) and argue your design in the **Workspace** reasoning tree. Save your code and figures — they feed your capstone.
