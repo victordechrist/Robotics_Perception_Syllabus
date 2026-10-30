@@ -5,8 +5,11 @@
 // Workspace tab is not rendered.
 
 import type { LabTask } from './types';
+import { week01Task } from './tasks/week01';
 
-export const LAB_TASKS: Readonly<Record<string, LabTask>> = {};
+export const LAB_TASKS: Readonly<Record<string, LabTask>> = {
+  [week01Task.labSlug]: week01Task,
+};
 
 /** The consensus task authored for a lab, or undefined when none exists. */
 export function getLabTask(labSlug: string): LabTask | undefined {

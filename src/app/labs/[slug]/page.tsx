@@ -7,6 +7,7 @@ import { getLabTask } from "@/lib/consensus";
 import { ExercisePlayer } from "@/components/exercise/ExercisePlayer";
 import { ConsensusWorkspace } from "@/components/consensus/ConsensusWorkspace";
 import { LabTabs } from "@/components/labs/LabTabs";
+import { LabViewLogger } from "@/components/labs/LabViewLogger";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -50,6 +51,7 @@ export default async function LabDetailPage({ params }: LabPageProps) {
 
   return (
     <div className="container max-w-4xl py-8 space-y-8">
+      <LabViewLogger labSlug={slug} />
       {/* Top navigation back link */}
       <div>
         <Link
