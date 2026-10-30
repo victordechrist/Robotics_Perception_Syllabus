@@ -1,0 +1,33 @@
+---
+title: "Feature Extraction & Matching"
+week: 4
+description: "Detect and describe keypoints with ORB."
+---
+
+# Lab 4: Feature Extraction & Matching
+
+Detect and describe keypoints with ORB, match them across views, then verify with the ratio test and RANSAC homography.
+
+<InfoCallout title="Prerequisites">
+Review Lecture 4 (Feature Extraction & Matching) — the concepts below build directly on it.
+</InfoCallout>
+
+## Warm-Up
+
+Detect ORB keypoints in an image and a rotated copy. How many detections repeat?
+
+## Core
+
+Match two overlapping images: `detectAndCompute` → `knnMatch` → Lowe ratio test → `findHomography` with RANSAC. Report the inlier count and ratio.
+
+## Boss Level
+
+Warp the second image with the recovered homography and overlay it on the first. Where does the alignment break?
+
+<Warning title="Watch Out">
+Keeping every KNN match because best < second-best is trivially true — the threshold `m < 0.75 n` is what does the work.
+</Warning>
+
+## Deliverable
+
+Work through the tiers above, then apply the same pipeline in this lab's **Exercise** tab (ordering the steps) and argue your design in the **Workspace** reasoning tree. Save your code and figures — they feed your capstone.

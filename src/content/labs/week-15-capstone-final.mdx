@@ -1,0 +1,33 @@
+---
+title: "Capstone Benchmark & Demo"
+week: 15
+description: "Prove your capstone works: reproducible dataset runs."
+---
+
+# Lab 15: Capstone Benchmark & Demo
+
+Prove your capstone works: reproducible dataset runs, aligned trajectory metrics, latency percentiles, and a report that stands on its numbers.
+
+<InfoCallout title="Prerequisites">
+Review Lecture 15 (Final Capstone Presentations) — the concepts below build directly on it.
+</InfoCallout>
+
+## Warm-Up
+
+Compute ATE on the provided trajectory twice — with and without Sim3 alignment — and explain why they differ.
+
+## Core
+
+Produce the benchmark table: ATE, RPE, depth coverage or match accuracy, p50/p95 latency. Every number from a fresh replay, fixed seeds.
+
+## Boss Level
+
+Run one ablation: remove a pipeline stage and report the change in every metric. State which stage costs the most when removed.
+
+<Warning title="Watch Out">
+Evaluating a cached trajectory — it measures the code you had then, not the code you have now.
+</Warning>
+
+## Deliverable
+
+Work through the tiers above, then apply the same pipeline in this lab's **Exercise** tab (ordering the steps) and argue your design in the **Workspace** reasoning tree. Save your code and figures — they feed your capstone.

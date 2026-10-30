@@ -1,0 +1,33 @@
+---
+title: "Pose-Graph SLAM"
+week: 12
+description: "Build a small visual SLAM system: keyframe front end."
+---
+
+# Lab 12: Pose-Graph SLAM
+
+Build a small visual SLAM system: keyframe front end, verified loop closures, and GTSAM pose-graph optimization.
+
+<InfoCallout title="Prerequisites">
+Review Lecture 12 (Visual SLAM Foundations) — the concepts below build directly on it.
+</InfoCallout>
+
+## Warm-Up
+
+Integrate noisy odometry around a square and plot accumulated drift at the end.
+
+## Core
+
+Construct a pose graph in GTSAM: prior + between factors for odometry + one loop-closure edge. Optimize and report endpoint error before vs after.
+
+## Boss Level
+
+Inject a false loop closure and observe the corruption. Then add a Huber robust kernel and show the map recovering.
+
+<Warning title="Watch Out">
+Adding loop edges without geometric verification — one false positive folds the entire map.
+</Warning>
+
+## Deliverable
+
+Work through the tiers above, then apply the same pipeline in this lab's **Exercise** tab (ordering the steps) and argue your design in the **Workspace** reasoning tree. Save your code and figures — they feed your capstone.
