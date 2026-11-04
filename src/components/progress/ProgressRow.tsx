@@ -62,7 +62,7 @@ export function ProgressRow({ lab }: ProgressRowProps) {
       <span className="text-xs text-indigo-600 dark:text-indigo-400" aria-label="Tree alignment">
         {task ? `${alignPct}% aligned` : '—'}
       </span>
-      {task && <ThoughtTreeButton labSlug={lab.slug} />}
+      {task && <ThoughtTreeButton labSlug={lab.slug} source="progress-row" />}
     </li>
   );
 }

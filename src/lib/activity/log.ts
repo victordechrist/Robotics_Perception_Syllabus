@@ -27,6 +27,22 @@ export function readActivity(): ActivityEvent[] {
   }
 }
 
+/** Append already-formed events in one storage write (raw-event flushes). */
+export function appendActivity(events: ActivityEvent[]): void {
+  if (typeof window === 'undefined' || events.length === 0) return;
+  try {
+    const existing = readActivity();
+    const merged = existing.concat(events);
+    const trimmed = merged.length > MAX_EVENTS ? merged.slice(merged.length - MAX_EVENTS) : merged;
+    window.localStorage.setItem(activityLogKey(), JSON.stringify(trimmed));
+    for (const event of events) {
+      window.dispatchEvent(new CustomEvent<ActivityEvent>(ACTIVITY_EVENT, { detail: event }));
+    }
+  } catch {
+    // Log must never break the page.
+  }
+}
+
 export interface EmitActivityOptions {
   labSlug?: string;
   data?: Record<string, unknown>;

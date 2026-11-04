@@ -98,7 +98,7 @@ export default async function LabDetailPage({ params }: LabPageProps) {
         <p className="text-base text-muted-foreground leading-relaxed">
           {lab.description}
         </p>
-        <ThoughtTreeButton labSlug={slug} />
+        <ThoughtTreeButton labSlug={slug} source="lab-header" />
       </header>
 
       {/* Lab Content Body */}
@@ -154,6 +154,7 @@ export default async function LabDetailPage({ params }: LabPageProps) {
 
           return (
             <LabTabs
+              labSlug={slug}
               guide={guide}
               exercise={
                 exercise ? (

@@ -1,0 +1,645 @@
+{
+  "nodes": [
+    {
+      "id": "CommitThought",
+      "type": "Activity",
+      "count": 1
+    },
+    {
+      "id": "ExerciseInteraction",
+      "type": "Activity",
+      "count": 7
+    },
+    {
+      "id": "Idle",
+      "type": "Activity",
+      "count": 1
+    },
+    {
+      "id": "LeavePage",
+      "type": "Activity",
+      "count": 1
+    },
+    {
+      "id": "MouseMove",
+      "type": "Activity",
+      "count": 1
+    },
+    {
+      "id": "NavigateToSection",
+      "type": "Activity",
+      "count": 3
+    },
+    {
+      "id": "OpenLab",
+      "type": "Activity",
+      "count": 1
+    },
+    {
+      "id": "ScrollContent",
+      "type": "Activity",
+      "count": 3
+    },
+    {
+      "id": "SwitchLabTab",
+      "type": "Activity",
+      "count": 1
+    },
+    {
+      "id": "ViewPage",
+      "type": "Activity",
+      "count": 4
+    },
+    {
+      "id": "ViewThoughtTree",
+      "type": "Activity",
+      "count": 2
+    }
+  ],
+  "edges": [
+    {
+      "source": "CommitThought",
+      "target": "ScrollContent",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 3200
+    },
+    {
+      "source": "CommitThought",
+      "target": "ViewThoughtTree",
+      "relation": "coOccurs",
+      "count": 2,
+      "weight": 0.0187,
+      "avgTimeDeltaMs": 4200
+    },
+    {
+      "source": "CommitThought",
+      "target": "ViewThoughtTree",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 2700
+    },
+    {
+      "source": "ExerciseInteraction",
+      "target": "CommitThought",
+      "relation": "coOccurs",
+      "count": 6,
+      "weight": 0.0561,
+      "avgTimeDeltaMs": 3733
+    },
+    {
+      "source": "ExerciseInteraction",
+      "target": "CommitThought",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 100
+    },
+    {
+      "source": "ExerciseInteraction",
+      "target": "CommitThought",
+      "relation": "triggers",
+      "count": 1,
+      "weight": 0.0769,
+      "avgTimeDeltaMs": 100
+    },
+    {
+      "source": "ExerciseInteraction",
+      "target": "ExerciseInteraction",
+      "relation": "coOccurs",
+      "count": 18,
+      "weight": 0.1682,
+      "avgTimeDeltaMs": 4722
+    },
+    {
+      "source": "ExerciseInteraction",
+      "target": "ExerciseInteraction",
+      "relation": "precedes",
+      "count": 6,
+      "weight": 0.25,
+      "avgTimeDeltaMs": 2017
+    },
+    {
+      "source": "ExerciseInteraction",
+      "target": "ExerciseInteraction",
+      "relation": "triggers",
+      "count": 3,
+      "weight": 0.2308,
+      "avgTimeDeltaMs": 100
+    },
+    {
+      "source": "ExerciseInteraction",
+      "target": "ScrollContent",
+      "relation": "coOccurs",
+      "count": 5,
+      "weight": 0.0467,
+      "avgTimeDeltaMs": 5820
+    },
+    {
+      "source": "ExerciseInteraction",
+      "target": "ViewThoughtTree",
+      "relation": "coOccurs",
+      "count": 8,
+      "weight": 0.0748,
+      "avgTimeDeltaMs": 5538
+    },
+    {
+      "source": "Idle",
+      "target": "NavigateToSection",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 10000
+    },
+    {
+      "source": "Idle",
+      "target": "NavigateToSection",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 10000
+    },
+    {
+      "source": "LeavePage",
+      "target": "ExerciseInteraction",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 10000
+    },
+    {
+      "source": "LeavePage",
+      "target": "OpenLab",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 6900
+    },
+    {
+      "source": "LeavePage",
+      "target": "ScrollContent",
+      "relation": "coOccurs",
+      "count": 2,
+      "weight": 0.0187,
+      "avgTimeDeltaMs": 3150
+    },
+    {
+      "source": "LeavePage",
+      "target": "SwitchLabTab",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 9900
+    },
+    {
+      "source": "LeavePage",
+      "target": "ViewPage",
+      "relation": "coOccurs",
+      "count": 2,
+      "weight": 0.0187,
+      "avgTimeDeltaMs": 3550
+    },
+    {
+      "source": "LeavePage",
+      "target": "ViewPage",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 100
+    },
+    {
+      "source": "LeavePage",
+      "target": "ViewPage",
+      "relation": "triggers",
+      "count": 1,
+      "weight": 0.0769,
+      "avgTimeDeltaMs": 100
+    },
+    {
+      "source": "MouseMove",
+      "target": "LeavePage",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 1300
+    },
+    {
+      "source": "MouseMove",
+      "target": "NavigateToSection",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 1200
+    },
+    {
+      "source": "MouseMove",
+      "target": "NavigateToSection",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 1200
+    },
+    {
+      "source": "MouseMove",
+      "target": "NavigateToSection",
+      "relation": "triggers",
+      "count": 1,
+      "weight": 0.0769,
+      "avgTimeDeltaMs": 1200
+    },
+    {
+      "source": "MouseMove",
+      "target": "OpenLab",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 8200
+    },
+    {
+      "source": "MouseMove",
+      "target": "ScrollContent",
+      "relation": "coOccurs",
+      "count": 2,
+      "weight": 0.0187,
+      "avgTimeDeltaMs": 4450
+    },
+    {
+      "source": "MouseMove",
+      "target": "ViewPage",
+      "relation": "coOccurs",
+      "count": 2,
+      "weight": 0.0187,
+      "avgTimeDeltaMs": 4850
+    },
+    {
+      "source": "NavigateToSection",
+      "target": "LeavePage",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 100
+    },
+    {
+      "source": "NavigateToSection",
+      "target": "LeavePage",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 100
+    },
+    {
+      "source": "NavigateToSection",
+      "target": "LeavePage",
+      "relation": "triggers",
+      "count": 1,
+      "weight": 0.0769,
+      "avgTimeDeltaMs": 100
+    },
+    {
+      "source": "NavigateToSection",
+      "target": "NavigateToSection",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 3000
+    },
+    {
+      "source": "NavigateToSection",
+      "target": "OpenLab",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 7000
+    },
+    {
+      "source": "NavigateToSection",
+      "target": "ScrollContent",
+      "relation": "coOccurs",
+      "count": 2,
+      "weight": 0.0187,
+      "avgTimeDeltaMs": 3250
+    },
+    {
+      "source": "NavigateToSection",
+      "target": "SwitchLabTab",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 10000
+    },
+    {
+      "source": "NavigateToSection",
+      "target": "ViewPage",
+      "relation": "coOccurs",
+      "count": 3,
+      "weight": 0.028,
+      "avgTimeDeltaMs": 2500
+    },
+    {
+      "source": "NavigateToSection",
+      "target": "ViewPage",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 200
+    },
+    {
+      "source": "NavigateToSection",
+      "target": "ViewPage",
+      "relation": "triggers",
+      "count": 1,
+      "weight": 0.0769,
+      "avgTimeDeltaMs": 200
+    },
+    {
+      "source": "OpenLab",
+      "target": "ExerciseInteraction",
+      "relation": "coOccurs",
+      "count": 4,
+      "weight": 0.0374,
+      "avgTimeDeltaMs": 6800
+    },
+    {
+      "source": "OpenLab",
+      "target": "SwitchLabTab",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 3000
+    },
+    {
+      "source": "OpenLab",
+      "target": "ViewPage",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 100
+    },
+    {
+      "source": "OpenLab",
+      "target": "ViewPage",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 100
+    },
+    {
+      "source": "OpenLab",
+      "target": "ViewPage",
+      "relation": "triggers",
+      "count": 1,
+      "weight": 0.0769,
+      "avgTimeDeltaMs": 100
+    },
+    {
+      "source": "ScrollContent",
+      "target": "ExerciseInteraction",
+      "relation": "coOccurs",
+      "count": 3,
+      "weight": 0.028,
+      "avgTimeDeltaMs": 7400
+    },
+    {
+      "source": "ScrollContent",
+      "target": "OpenLab",
+      "relation": "coOccurs",
+      "count": 2,
+      "weight": 0.0187,
+      "avgTimeDeltaMs": 3750
+    },
+    {
+      "source": "ScrollContent",
+      "target": "OpenLab",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 2500
+    },
+    {
+      "source": "ScrollContent",
+      "target": "ScrollContent",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 2500
+    },
+    {
+      "source": "ScrollContent",
+      "target": "ScrollContent",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 2500
+    },
+    {
+      "source": "ScrollContent",
+      "target": "SwitchLabTab",
+      "relation": "coOccurs",
+      "count": 2,
+      "weight": 0.0187,
+      "avgTimeDeltaMs": 6750
+    },
+    {
+      "source": "ScrollContent",
+      "target": "ViewPage",
+      "relation": "coOccurs",
+      "count": 2,
+      "weight": 0.0187,
+      "avgTimeDeltaMs": 3850
+    },
+    {
+      "source": "ScrollContent",
+      "target": "ViewThoughtTree",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 2500
+    },
+    {
+      "source": "ScrollContent",
+      "target": "ViewThoughtTree",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 2500
+    },
+    {
+      "source": "SwitchLabTab",
+      "target": "ExerciseInteraction",
+      "relation": "coOccurs",
+      "count": 4,
+      "weight": 0.0374,
+      "avgTimeDeltaMs": 3800
+    },
+    {
+      "source": "SwitchLabTab",
+      "target": "ExerciseInteraction",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 100
+    },
+    {
+      "source": "SwitchLabTab",
+      "target": "ExerciseInteraction",
+      "relation": "triggers",
+      "count": 1,
+      "weight": 0.0769,
+      "avgTimeDeltaMs": 100
+    },
+    {
+      "source": "ViewPage",
+      "target": "ExerciseInteraction",
+      "relation": "coOccurs",
+      "count": 5,
+      "weight": 0.0467,
+      "avgTimeDeltaMs": 7340
+    },
+    {
+      "source": "ViewPage",
+      "target": "LeavePage",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 2100
+    },
+    {
+      "source": "ViewPage",
+      "target": "MouseMove",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 800
+    },
+    {
+      "source": "ViewPage",
+      "target": "MouseMove",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 800
+    },
+    {
+      "source": "ViewPage",
+      "target": "MouseMove",
+      "relation": "triggers",
+      "count": 1,
+      "weight": 0.0769,
+      "avgTimeDeltaMs": 800
+    },
+    {
+      "source": "ViewPage",
+      "target": "NavigateToSection",
+      "relation": "coOccurs",
+      "count": 2,
+      "weight": 0.0187,
+      "avgTimeDeltaMs": 2400
+    },
+    {
+      "source": "ViewPage",
+      "target": "NavigateToSection",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 2800
+    },
+    {
+      "source": "ViewPage",
+      "target": "OpenLab",
+      "relation": "coOccurs",
+      "count": 2,
+      "weight": 0.0187,
+      "avgTimeDeltaMs": 7900
+    },
+    {
+      "source": "ViewPage",
+      "target": "ScrollContent",
+      "relation": "coOccurs",
+      "count": 4,
+      "weight": 0.0374,
+      "avgTimeDeltaMs": 4150
+    },
+    {
+      "source": "ViewPage",
+      "target": "ScrollContent",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 1800
+    },
+    {
+      "source": "ViewPage",
+      "target": "ScrollContent",
+      "relation": "triggers",
+      "count": 1,
+      "weight": 0.0769,
+      "avgTimeDeltaMs": 1800
+    },
+    {
+      "source": "ViewPage",
+      "target": "SwitchLabTab",
+      "relation": "coOccurs",
+      "count": 2,
+      "weight": 0.0187,
+      "avgTimeDeltaMs": 6350
+    },
+    {
+      "source": "ViewPage",
+      "target": "SwitchLabTab",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 2900
+    },
+    {
+      "source": "ViewPage",
+      "target": "ViewPage",
+      "relation": "coOccurs",
+      "count": 3,
+      "weight": 0.028,
+      "avgTimeDeltaMs": 6067
+    },
+    {
+      "source": "ViewThoughtTree",
+      "target": "Idle",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 30000
+    },
+    {
+      "source": "ViewThoughtTree",
+      "target": "ScrollContent",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 500
+    },
+    {
+      "source": "ViewThoughtTree",
+      "target": "ScrollContent",
+      "relation": "precedes",
+      "count": 1,
+      "weight": 0.0417,
+      "avgTimeDeltaMs": 500
+    },
+    {
+      "source": "ViewThoughtTree",
+      "target": "ScrollContent",
+      "relation": "triggers",
+      "count": 1,
+      "weight": 0.0769,
+      "avgTimeDeltaMs": 500
+    },
+    {
+      "source": "ViewThoughtTree",
+      "target": "ViewThoughtTree",
+      "relation": "coOccurs",
+      "count": 1,
+      "weight": 0.0093,
+      "avgTimeDeltaMs": 3000
+    }
+  ]
+}

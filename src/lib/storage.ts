@@ -16,3 +16,8 @@ export function consensusTreeKey(labSlug: string): string {
 export function activityLogKey(): string {
   return `${RP_STORAGE_PREFIX}:activity`;
 }
+
+/** localStorage key for the persistent anonymous research id. */
+export function anonymousUidKey(): string {
+  return `${RP_STORAGE_PREFIX}:uid`;
+}

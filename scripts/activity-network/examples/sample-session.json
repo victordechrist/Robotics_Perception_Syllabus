@@ -1,0 +1,266 @@
+[
+  {
+    "id": "x0",
+    "ts": "2024-10-31T18:40:00.000Z",
+    "type": "page.view",
+    "data": {
+      "path": "/",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1"
+    }
+  },
+  {
+    "id": "x1",
+    "ts": "2024-10-31T18:40:00.800Z",
+    "type": "raw.mouse",
+    "data": {
+      "path": "/labs",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "et": "mousemove",
+      "x": 420,
+      "y": 310
+    }
+  },
+  {
+    "id": "x2",
+    "ts": "2024-10-31T18:40:02.000Z",
+    "type": "dom.click",
+    "data": {
+      "path": "/",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "label": "Labs",
+      "tag": "a",
+      "href": "/labs"
+    }
+  },
+  {
+    "id": "x3",
+    "ts": "2024-10-31T18:40:02.100Z",
+    "type": "page.dwell",
+    "data": {
+      "path": "/",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "ms": 2100
+    }
+  },
+  {
+    "id": "x4",
+    "ts": "2024-10-31T18:40:02.200Z",
+    "type": "page.view",
+    "data": {
+      "path": "/labs",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1"
+    }
+  },
+  {
+    "id": "x5",
+    "ts": "2024-10-31T18:40:04.000Z",
+    "type": "scroll.depth",
+    "data": {
+      "path": "/labs",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "pct": 25
+    }
+  },
+  {
+    "id": "x6",
+    "ts": "2024-10-31T18:40:06.500Z",
+    "type": "scroll.depth",
+    "data": {
+      "path": "/labs",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "pct": 50
+    }
+  },
+  {
+    "id": "x7",
+    "ts": "2024-10-31T18:40:09.000Z",
+    "type": "dom.click",
+    "data": {
+      "path": "/labs",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "label": "Week 1 · Foundations",
+      "tag": "a",
+      "href": "/labs/lab-01-foundations"
+    }
+  },
+  {
+    "id": "x8",
+    "ts": "2024-10-31T18:40:09.100Z",
+    "type": "lab.view",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1"
+    }
+  },
+  {
+    "id": "x9",
+    "ts": "2024-10-31T18:40:12.000Z",
+    "type": "tab.switch",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "tab": "exercise"
+    }
+  },
+  {
+    "id": "x10",
+    "ts": "2024-10-31T18:40:12.100Z",
+    "type": "exercise.step.view",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1"
+    }
+  },
+  {
+    "id": "x11",
+    "ts": "2024-10-31T18:40:15.000Z",
+    "type": "exercise.block.place",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1"
+    }
+  },
+  {
+    "id": "x12",
+    "ts": "2024-10-31T18:40:18.000Z",
+    "type": "exercise.check.attempt",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1"
+    }
+  },
+  {
+    "id": "x13",
+    "ts": "2024-10-31T18:40:18.100Z",
+    "type": "exercise.check.result",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "ok": false
+    }
+  },
+  {
+    "id": "x14",
+    "ts": "2024-10-31T18:40:24.000Z",
+    "type": "exercise.check.attempt",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1"
+    }
+  },
+  {
+    "id": "x15",
+    "ts": "2024-10-31T18:40:24.100Z",
+    "type": "exercise.check.result",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "ok": true
+    }
+  },
+  {
+    "id": "x16",
+    "ts": "2024-10-31T18:40:24.200Z",
+    "type": "exercise.step.complete",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1"
+    }
+  },
+  {
+    "id": "x17",
+    "ts": "2024-10-31T18:40:24.300Z",
+    "type": "tree.thought.commit",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1"
+    }
+  },
+  {
+    "id": "x18",
+    "ts": "2024-10-31T18:40:27.000Z",
+    "type": "modal.open",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "source": "lab-header"
+    }
+  },
+  {
+    "id": "x19",
+    "ts": "2024-10-31T18:40:27.500Z",
+    "type": "raw.scroll",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "y": 400
+    }
+  },
+  {
+    "id": "x20",
+    "ts": "2024-10-31T18:40:30.000Z",
+    "type": "modal.close",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "source": "lab-header"
+    }
+  },
+  {
+    "id": "x21",
+    "ts": "2024-10-31T18:41:10.000Z",
+    "type": "dom.click",
+    "data": {
+      "path": "/labs/lab-01-foundations",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "label": "Lectures",
+      "tag": "a",
+      "href": "/lectures"
+    }
+  },
+  {
+    "id": "x22",
+    "ts": "2024-10-31T18:41:10.200Z",
+    "type": "page.view",
+    "data": {
+      "path": "/lectures",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1"
+    }
+  },
+  {
+    "id": "x23",
+    "ts": "2024-10-31T18:41:13.000Z",
+    "type": "dom.click",
+    "data": {
+      "path": "/lectures",
+      "sid": "demo-session-1",
+      "uid": "demo-user-1",
+      "label": "Slides",
+      "tag": "a",
+      "href": "https://github.com/victordechrist/slides"
+    }
+  }
+]

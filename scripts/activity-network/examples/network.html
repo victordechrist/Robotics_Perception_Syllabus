@@ -1,0 +1,87 @@
+<!doctype html><html><head><meta charset="utf-8"><title>DMS activity network</title>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true});</script></head>
+<body><pre class="mermaid">graph LR
+  CommitThought["CommitThought (1)"]
+  ExerciseInteraction["ExerciseInteraction (7)"]
+  Idle["Idle (1)"]
+  LeavePage["LeavePage (1)"]
+  MouseMove["MouseMove (1)"]
+  NavigateToSection["NavigateToSection (3)"]
+  OpenLab["OpenLab (1)"]
+  ScrollContent["ScrollContent (3)"]
+  SwitchLabTab["SwitchLabTab (1)"]
+  ViewPage["ViewPage (4)"]
+  ViewThoughtTree["ViewThoughtTree (2)"]
+  CommitThought -->|"coOccurs ×1"| ScrollContent
+  CommitThought -->|"coOccurs ×2"| ViewThoughtTree
+  CommitThought -->|"precedes ×1"| ViewThoughtTree
+  ExerciseInteraction -->|"coOccurs ×6"| CommitThought
+  ExerciseInteraction -->|"precedes ×1"| CommitThought
+  ExerciseInteraction -->|"triggers ×1"| CommitThought
+  ExerciseInteraction -->|"coOccurs ×18"| ExerciseInteraction
+  ExerciseInteraction -->|"precedes ×6"| ExerciseInteraction
+  ExerciseInteraction -->|"triggers ×3"| ExerciseInteraction
+  ExerciseInteraction -->|"coOccurs ×5"| ScrollContent
+  ExerciseInteraction -->|"coOccurs ×8"| ViewThoughtTree
+  Idle -->|"coOccurs ×1"| NavigateToSection
+  Idle -->|"precedes ×1"| NavigateToSection
+  LeavePage -->|"coOccurs ×1"| ExerciseInteraction
+  LeavePage -->|"coOccurs ×1"| OpenLab
+  LeavePage -->|"coOccurs ×2"| ScrollContent
+  LeavePage -->|"coOccurs ×1"| SwitchLabTab
+  LeavePage -->|"coOccurs ×2"| ViewPage
+  LeavePage -->|"precedes ×1"| ViewPage
+  LeavePage -->|"triggers ×1"| ViewPage
+  MouseMove -->|"coOccurs ×1"| LeavePage
+  MouseMove -->|"coOccurs ×1"| NavigateToSection
+  MouseMove -->|"precedes ×1"| NavigateToSection
+  MouseMove -->|"triggers ×1"| NavigateToSection
+  MouseMove -->|"coOccurs ×1"| OpenLab
+  MouseMove -->|"coOccurs ×2"| ScrollContent
+  MouseMove -->|"coOccurs ×2"| ViewPage
+  NavigateToSection -->|"coOccurs ×1"| LeavePage
+  NavigateToSection -->|"precedes ×1"| LeavePage
+  NavigateToSection -->|"triggers ×1"| LeavePage
+  NavigateToSection -->|"coOccurs ×1"| NavigateToSection
+  NavigateToSection -->|"coOccurs ×1"| OpenLab
+  NavigateToSection -->|"coOccurs ×2"| ScrollContent
+  NavigateToSection -->|"coOccurs ×1"| SwitchLabTab
+  NavigateToSection -->|"coOccurs ×3"| ViewPage
+  NavigateToSection -->|"precedes ×1"| ViewPage
+  NavigateToSection -->|"triggers ×1"| ViewPage
+  OpenLab -->|"coOccurs ×4"| ExerciseInteraction
+  OpenLab -->|"coOccurs ×1"| SwitchLabTab
+  OpenLab -->|"coOccurs ×1"| ViewPage
+  OpenLab -->|"precedes ×1"| ViewPage
+  OpenLab -->|"triggers ×1"| ViewPage
+  ScrollContent -->|"coOccurs ×3"| ExerciseInteraction
+  ScrollContent -->|"coOccurs ×2"| OpenLab
+  ScrollContent -->|"precedes ×1"| OpenLab
+  ScrollContent -->|"coOccurs ×1"| ScrollContent
+  ScrollContent -->|"precedes ×1"| ScrollContent
+  ScrollContent -->|"coOccurs ×2"| SwitchLabTab
+  ScrollContent -->|"coOccurs ×2"| ViewPage
+  ScrollContent -->|"coOccurs ×1"| ViewThoughtTree
+  ScrollContent -->|"precedes ×1"| ViewThoughtTree
+  SwitchLabTab -->|"coOccurs ×4"| ExerciseInteraction
+  SwitchLabTab -->|"precedes ×1"| ExerciseInteraction
+  SwitchLabTab -->|"triggers ×1"| ExerciseInteraction
+  ViewPage -->|"coOccurs ×5"| ExerciseInteraction
+  ViewPage -->|"coOccurs ×1"| LeavePage
+  ViewPage -->|"coOccurs ×1"| MouseMove
+  ViewPage -->|"precedes ×1"| MouseMove
+  ViewPage -->|"triggers ×1"| MouseMove
+  ViewPage -->|"coOccurs ×2"| NavigateToSection
+  ViewPage -->|"precedes ×1"| NavigateToSection
+  ViewPage -->|"coOccurs ×2"| OpenLab
+  ViewPage -->|"coOccurs ×4"| ScrollContent
+  ViewPage -->|"precedes ×1"| ScrollContent
+  ViewPage -->|"triggers ×1"| ScrollContent
+  ViewPage -->|"coOccurs ×2"| SwitchLabTab
+  ViewPage -->|"precedes ×1"| SwitchLabTab
+  ViewPage -->|"coOccurs ×3"| ViewPage
+  ViewThoughtTree -->|"precedes ×1"| Idle
+  ViewThoughtTree -->|"coOccurs ×1"| ScrollContent
+  ViewThoughtTree -->|"precedes ×1"| ScrollContent
+  ViewThoughtTree -->|"triggers ×1"| ScrollContent
+  ViewThoughtTree -->|"coOccurs ×1"| ViewThoughtTree</pre></body></html>

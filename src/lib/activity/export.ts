@@ -50,9 +50,25 @@ export function exportActivityCSV(): void {
   downloadBlob(blob, `rp-activity-${timestampForFilename()}.csv`);
 }
 
+/** Activity events belonging to one lab (semantic labSlug or DOM path match). */
+function activityForLab(labSlug: string): ActivityEvent[] {
+  return readActivity().filter(
+    (e) =>
+      e.labSlug === labSlug ||
+      (typeof e.data?.path === 'string' &&
+        e.data.path.startsWith(`/labs/${labSlug}`)),
+  );
+}
+
 export function exportTreeJSON(labSlug: string, graph: unknown): void {
   emitActivity('activity.export', { labSlug, data: { format: 'tree-json' } });
-  const blob = new Blob([JSON.stringify(graph, null, 2)], { type: 'application/json' });
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    labSlug,
+    tree: graph,
+    activity: activityForLab(labSlug),
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
   downloadBlob(blob, `rp-tree-${labSlug}-${timestampForFilename()}.json`);
 }
 
@@ -61,10 +77,18 @@ export function exportTreeJSON(labSlug: string, graph: unknown): void {
  * Used for the final download once all tasks are finished, so nothing is
  * lost when the trees auto-reset afterwards.
  */
-export function exportTreesBundle(trees: Record<string, unknown>): void {
+export function exportResearchBundle(trees: Record<string, unknown>): void {
   const labs = Object.keys(trees);
-  emitActivity('activity.export', { data: { format: 'trees-bundle', labs: labs.length } });
-  const payload = { exportedAt: new Date().toISOString(), labs, trees };
+  const activity = readActivity();
+  emitActivity('activity.export', {
+    data: { format: 'research-bundle', labs: labs.length, events: activity.length },
+  });
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    course: 'rp',
+    trees,
+    activity,
+  };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-  downloadBlob(blob, `rp-trees-all-${timestampForFilename()}.json`);
+  downloadBlob(blob, `rp-research-bundle-${timestampForFilename()}.json`);
 }
