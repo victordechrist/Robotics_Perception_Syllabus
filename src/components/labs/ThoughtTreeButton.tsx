@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { getLabTask } from '@/lib/consensus';
 import { useConsensusTree } from '@/lib/consensus/useConsensusTree';
 import { TreeVisualizer } from '@/components/consensus/TreeVisualizer';
-import { exportTreeJSON, exportTreesBundle } from '@/lib/activity/export';
+import { emitActivity } from '@/lib/activity';
+import { exportTreeJSON, exportResearchBundle } from '@/lib/activity/export';
 import { allTasksFinished, collectAllTrees, resetAllTrees } from '@/lib/consensus/treeLifecycle';
 import { Button } from '@/components/ui/button';
 import { Download, GitBranch, X } from 'lucide-react';
@@ -12,6 +13,8 @@ import { Download, GitBranch, X } from 'lucide-react';
 interface ThoughtTreeButtonProps {
   labSlug: string;
   variant?: 'outline' | 'default';
+  /** Where the button lives — recorded on modal.open/close. */
+  source?: 'lab-header' | 'progress-row';
 }
 
 /**
@@ -20,22 +23,30 @@ interface ThoughtTreeButtonProps {
  * The underlying hook subscribes to localStorage writes, so the modal shows
  * new commits live — including auto-commits landing while it is open.
  */
-export function ThoughtTreeButton({ labSlug, variant = 'outline' }: ThoughtTreeButtonProps) {
+export function ThoughtTreeButton({ labSlug, variant = 'outline', source = 'lab-header' }: ThoughtTreeButtonProps) {
   const task = getLabTask(labSlug);
   if (!task) return null;
-  return <ThoughtTreeButtonInner labSlug={labSlug} variant={variant} task={task} />;
+  return <ThoughtTreeButtonInner labSlug={labSlug} variant={variant} task={task} source={source} />;
 }
 
 function ThoughtTreeButtonInner({
   labSlug,
   variant,
   task,
+  source,
 }: {
   labSlug: string;
   variant: 'outline' | 'default';
   task: NonNullable<ReturnType<typeof getLabTask>>;
+  source: 'lab-header' | 'progress-row';
 }) {
   const [open, setOpen] = useState(false);
+  const wasOpen = useRef(false);
+  useEffect(() => {
+    if (open === wasOpen.current) return;
+    wasOpen.current = open;
+    emitActivity(open ? 'modal.open' : 'modal.close', { labSlug, data: { modal: 'thought-tree', source } });
+  }, [open, labSlug, source]);
   const { graph, hydrated } = useConsensusTree(task);
 
   const close = useCallback(() => setOpen(false), []);
@@ -84,7 +95,7 @@ function ThoughtTreeButtonInner({
                 <button
                   onClick={() => {
                     if (allTasksFinished()) {
-                      exportTreesBundle(collectAllTrees());
+                      exportResearchBundle(collectAllTrees());
                       resetAllTrees();
                     } else {
                       exportTreeJSON(labSlug, graph);

@@ -1,10 +1,13 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
+import { emitActivity } from '@/lib/activity';
 import { cn } from '@/lib/utils';
 import { BookOpen, Puzzle, GitBranch } from 'lucide-react';
 
 interface LabTabsProps {
+  /** Recorded on tab.switch activity events. */
+  labSlug: string;
   guide: ReactNode;
   /** Rendered Exercise tab content, or null when the lab has no exercise. */
   exercise?: ReactNode;
@@ -19,7 +22,7 @@ type TabId = 'guide' | 'exercise' | 'workspace';
  * content does not exist are not rendered; when only the guide exists the
  * tab bar collapses to just the guide content.
  */
-export function LabTabs({ guide, exercise = null, workspace = null }: LabTabsProps) {
+export function LabTabs({ labSlug, guide, exercise = null, workspace = null }: LabTabsProps) {
   const tabs: Array<{ id: TabId; label: string; icon: ReactNode; content: ReactNode }> = [
     { id: 'guide', label: 'Guide', icon: <BookOpen className="h-4 w-4" />, content: guide },
   ];
@@ -46,7 +49,12 @@ export function LabTabs({ guide, exercise = null, workspace = null }: LabTabsPro
             key={tab.id}
             role="tab"
             aria-selected={active === tab.id}
-            onClick={() => setActive(tab.id)}
+            onClick={() => {
+              setActive(tab.id);
+              if (tab.id !== active) {
+                emitActivity('tab.switch', { labSlug, data: { tab: tab.id } });
+              }
+            }}
             className={cn(
               'inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors',
               active === tab.id

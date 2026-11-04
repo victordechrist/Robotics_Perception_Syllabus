@@ -14,7 +14,22 @@ export type ActivityType =
   | 'tree.thought.repair'
   | 'tree.reset'
   | 'tree.gold.unlock'
-  | 'activity.export';
+  | 'activity.export'
+  | 'page.view'
+  | 'page.dwell'
+  | 'dom.click'
+  | 'dom.throttle'
+  | 'tab.switch'
+  | 'scroll.depth'
+  | 'window.focus'
+  | 'window.blur'
+  | 'modal.open'
+  | 'modal.close'
+  | 'raw.mouse'
+  | 'raw.key'
+  | 'raw.field'
+  | 'raw.scroll'
+  | 'raw.focus';
 
 export interface ActivityEvent {
   id: string;

@@ -1,0 +1,176 @@
+{
+  "idleGapMs": 30000,
+  "rules": [
+    {
+      "name": "NavigateToSection",
+      "match": {
+        "type": "dom.click",
+        "label": [
+          "Syllabus",
+          "Labs",
+          "Lectures",
+          "Resources",
+          "About",
+          "Assessments",
+          "Progress",
+          "Home",
+          "Slides",
+          "Staff"
+        ]
+      }
+    },
+    {
+      "name": "OpenLab",
+      "match": {
+        "type": "dom.click",
+        "hrefPrefix": "/labs/"
+      }
+    },
+    {
+      "name": "OpenLecture",
+      "match": {
+        "type": "dom.click",
+        "hrefPrefix": "/lectures/"
+      }
+    },
+    {
+      "name": "OpenExternalLink",
+      "match": {
+        "type": "dom.click",
+        "hrefPrefix": "http"
+      }
+    },
+    {
+      "name": "SwitchLabTab",
+      "match": {
+        "type": "tab.switch"
+      }
+    },
+    {
+      "name": "ViewThoughtTree",
+      "match": {
+        "type": [
+          "modal.open",
+          "modal.close"
+        ]
+      }
+    },
+    {
+      "name": "ScrollContent",
+      "match": {
+        "type": [
+          "scroll.depth",
+          "raw.scroll"
+        ]
+      }
+    },
+    {
+      "name": "ToggleTheme",
+      "match": {
+        "type": "dom.click",
+        "label": [
+          "Toggle theme",
+          "Switch to dark theme",
+          "Switch to light theme"
+        ]
+      }
+    },
+    {
+      "name": "ExerciseInteraction",
+      "match": {
+        "typePrefix": "exercise."
+      }
+    },
+    {
+      "name": "CommitThought",
+      "match": {
+        "typePrefix": "tree."
+      }
+    },
+    {
+      "name": "LabLocked",
+      "match": {
+        "type": "lab.locked.blocked"
+      }
+    },
+    {
+      "name": "ViewPage",
+      "match": {
+        "type": [
+          "page.view",
+          "lab.view"
+        ]
+      }
+    },
+    {
+      "name": "LeavePage",
+      "match": {
+        "type": "page.dwell"
+      }
+    },
+    {
+      "name": "DownloadData",
+      "match": {
+        "type": "activity.export"
+      }
+    },
+    {
+      "name": "KeyboardInput",
+      "match": {
+        "type": "raw.key",
+        "editable": true
+      }
+    },
+    {
+      "name": "KeyPress",
+      "match": {
+        "type": "raw.key"
+      }
+    },
+    {
+      "name": "FocusElement",
+      "match": {
+        "type": "raw.focus",
+        "et": "focusin"
+      }
+    },
+    {
+      "name": "BlurElement",
+      "match": {
+        "type": "raw.focus",
+        "et": "focusout"
+      }
+    },
+    {
+      "name": "FieldInput",
+      "match": {
+        "type": "raw.field"
+      }
+    },
+    {
+      "name": "MouseMove",
+      "match": {
+        "type": "raw.mouse"
+      }
+    },
+    {
+      "name": "WindowFocus",
+      "match": {
+        "type": [
+          "window.focus",
+          "window.blur"
+        ]
+      }
+    },
+    {
+      "name": "ClickElement",
+      "match": {
+        "type": "dom.click"
+      }
+    },
+    {
+      "name": "Other",
+      "match": {}
+    }
+  ]
+}
