@@ -19,6 +19,8 @@ export type ActivityType =
   | 'page.dwell'
   | 'dom.click'
   | 'dom.throttle'
+  | 'quiz.question.answer'
+  | 'quiz.complete'
   | 'tab.switch'
   | 'scroll.depth'
   | 'window.focus'

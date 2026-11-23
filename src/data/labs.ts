@@ -7,6 +7,15 @@ export interface Lab {
   hasMdx: boolean;
 }
 
+
+/** Badge label for a lab: "Test N" for checkpoint tests, "Week N" otherwise. */
+export function labBadgeLabel(lab: Lab): string {
+  if (lab.slug.startsWith("test-")) {
+    return `Test ${lab.slug.split("-")[1]}`;
+  }
+  return `Week ${lab.week}`;
+}
+
 export const labs: Lab[] = [
   {
     slug: "week-1-math-foundations",
@@ -42,6 +51,15 @@ export const labs: Lab[] = [
     group: "Foundations",
     description:
       "Warm-up: Compute Hamming and Euclidean distances between feature vectors. Core: Match ORB features across image pairs using ratio test filtering. Boss Level: Implement a FLANN nearest-neighbor search with KD-trees.",
+    hasMdx: true,
+  },
+  {
+    slug: "test-1",
+    title: "Test 1: Foundations & Vision Checkpoint",
+    week: 4,
+    group: "Foundations",
+    description:
+      "A periodic checkpoint after Weeks 1-4 — rigid transformations, the pinhole camera, image processing, and feature matching. Eight reasoning scenes plus a 12-question auto-graded quiz.",
     hasMdx: true,
   },
   {
@@ -81,6 +99,15 @@ export const labs: Lab[] = [
     hasMdx: true,
   },
   {
+    slug: "test-2",
+    title: "Test 2: Midterm Checkpoint",
+    week: 8,
+    group: "Vision",
+    description:
+      "A periodic checkpoint after Weeks 5-8 — stereo vision, optical flow, camera calibration, and the midterm synthesis. Eight reasoning scenes plus a 12-question auto-graded quiz.",
+    hasMdx: true,
+  },
+  {
     slug: "week-9-sensor-noise-models",
     title: "Sensor Noise & Covariance Propagation",
     week: 9,
@@ -117,6 +144,15 @@ export const labs: Lab[] = [
     hasMdx: true,
   },
   {
+    slug: "test-3",
+    title: "Test 3: Estimation & SLAM Checkpoint",
+    week: 12,
+    group: "Estimation & SLAM",
+    description:
+      "A periodic checkpoint after Weeks 9-12 — sensor noise models, Kalman and particle filters, and visual SLAM. Eight reasoning scenes plus a 12-question auto-graded quiz.",
+    hasMdx: true,
+  },
+  {
     slug: "week-13-ros2-integration",
     title: "ROS 2 Architecture & Node Pipeline",
     week: 13,
@@ -141,6 +177,15 @@ export const labs: Lab[] = [
     group: "Capstone",
     description:
       "Warm-up: Validate end-to-end telemetry and ground-truth metrics. Core: Execute complete autonomous navigation and SLAM pipeline evaluation. Boss Level: Perform live live-demo verification against dynamic obstacle environments.",
+    hasMdx: true,
+  },
+  {
+    slug: "test-4",
+    title: "Test 4: Capstone Checkpoint",
+    week: 15,
+    group: "Capstone",
+    description:
+      "The final checkpoint after Weeks 13-15 — ROS2 integration, advanced perception topics, and the capstone project. Eight reasoning scenes plus a 12-question auto-graded quiz.",
     hasMdx: true,
   },
 ];

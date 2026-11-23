@@ -3,7 +3,7 @@
 import { useState, type ReactNode } from 'react';
 import { emitActivity } from '@/lib/activity';
 import { cn } from '@/lib/utils';
-import { BookOpen, Puzzle, GitBranch } from 'lucide-react';
+import { BookOpen, Puzzle, GitBranch, ClipboardCheck } from 'lucide-react';
 
 interface LabTabsProps {
   /** Recorded on tab.switch activity events. */
@@ -13,16 +13,18 @@ interface LabTabsProps {
   exercise?: ReactNode;
   /** Rendered Workspace tab content, or null when the lab has no task. */
   workspace?: ReactNode;
+  /** Rendered Quiz tab content, or null when the lab has no quiz. */
+  quiz?: ReactNode;
 }
 
-type TabId = 'guide' | 'exercise' | 'workspace';
+type TabId = 'guide' | 'exercise' | 'workspace' | 'quiz';
 
 /**
  * Guide | Exercise | Workspace switcher for lab detail pages. Tabs whose
  * content does not exist are not rendered; when only the guide exists the
  * tab bar collapses to just the guide content.
  */
-export function LabTabs({ labSlug, guide, exercise = null, workspace = null }: LabTabsProps) {
+export function LabTabs({ labSlug, guide, exercise = null, workspace = null, quiz = null }: LabTabsProps) {
   const tabs: Array<{ id: TabId; label: string; icon: ReactNode; content: ReactNode }> = [
     { id: 'guide', label: 'Guide', icon: <BookOpen className="h-4 w-4" />, content: guide },
   ];
@@ -31,6 +33,9 @@ export function LabTabs({ labSlug, guide, exercise = null, workspace = null }: L
   }
   if (workspace) {
     tabs.push({ id: 'workspace', label: 'Workspace', icon: <GitBranch className="h-4 w-4" />, content: workspace });
+  }
+  if (quiz) {
+    tabs.push({ id: 'quiz', label: 'Quiz', icon: <ClipboardCheck className="h-4 w-4" />, content: quiz });
   }
 
   const [active, setActive] = useState<TabId>('guide');

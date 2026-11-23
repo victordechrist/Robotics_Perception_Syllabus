@@ -1,7 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { labs } from "@/data/labs";
+import { labs, labBadgeLabel } from "@/data/labs";
+import { TEST_QUIZZES } from "@/data/testQuiz";
+import { QuizPanel } from "@/components/labs/QuizPanel";
 import { getExercise } from "@/lib/exercises";
 import { getLabTask } from "@/lib/consensus";
 import { ExercisePlayer } from "@/components/exercise/ExercisePlayer";
@@ -73,7 +75,7 @@ export default async function LabDetailPage({ params }: LabPageProps) {
       <header className="space-y-3 pb-6 border-b border-border/60">
         <div className="flex flex-wrap items-center gap-2.5">
           <Badge variant="outline" className="font-bold text-xs bg-muted/50">
-            Week {lab.week}
+            {labBadgeLabel(lab)}
           </Badge>
           <Badge variant="secondary" className="font-medium text-xs">
             {lab.group}
@@ -168,6 +170,11 @@ export default async function LabDetailPage({ params }: LabPageProps) {
                   <GatedLabTab labSlug={slug} previousLab={previousLab} tab="workspace">
                     <ConsensusWorkspace task={task} />
                   </GatedLabTab>
+                ) : undefined
+              }
+              quiz={
+                TEST_QUIZZES[slug] ? (
+                  <QuizPanel labSlug={slug} questions={TEST_QUIZZES[slug]} />
                 ) : undefined
               }
             />

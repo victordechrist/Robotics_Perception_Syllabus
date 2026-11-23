@@ -1,4 +1,5 @@
 import { labs } from '@/data/labs';
+import { getExercise } from '@/lib/exercises';
 import type { LabMeta } from '@/lib/types';
 
 /**
@@ -11,6 +12,11 @@ export function visibleLabs(): LabMeta[] {
 
 export function previousVisibleLab(labSlug: string): LabMeta | undefined {
   const visible = visibleLabs();
-  const i = visible.findIndex((l) => l.slug === labSlug);
-  return i > 0 ? visible[i - 1] : undefined;
+  const index = visible.findIndex((l) => l.slug === labSlug);
+  // Skip labs without exercises (e.g. checkpoint tests) so the sequential
+  // gating chain still points at the previous real exercise.
+  for (let i = index - 1; i >= 0; i--) {
+    if (getExercise(visible[i].slug)) return visible[i];
+  }
+  return undefined;
 }
