@@ -15,6 +15,7 @@ import { LabLockBadge } from "@/components/labs/LabLockBadge";
 import { capstoneMilestones } from "@/data/assessments";
 import { cn } from "@/lib/utils";
 import { ArrowRight, CheckCircle2, Code2, Flag, Lock, Rocket, Sparkles, Terminal } from "lucide-react";
+import { labBadgeLabel } from "@/data/labs";
 
 const strongCapstonePoints = [
   "End-to-end integration of camera geometry, visual odometry, and state estimation.",
@@ -140,7 +141,7 @@ export default function LabsPage() {
                     <CardHeader className="space-y-2.5 pb-3">
                       <div className="flex items-center justify-between gap-2">
                         <Badge variant="outline" className="font-bold text-xs bg-muted/50">
-                          Week {lab.week}
+                          {labBadgeLabel(lab)}
                         </Badge>
                         <Badge
                           variant="secondary"

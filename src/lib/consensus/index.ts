@@ -20,6 +20,10 @@ import { week12Task } from './tasks/week12';
 import { week13Task } from './tasks/week13';
 import { week14Task } from './tasks/week14';
 import { week15Task } from './tasks/week15';
+import { test1Task } from './tasks/test-1';
+import { test2Task } from './tasks/test-2';
+import { test3Task } from './tasks/test-3';
+import { test4Task } from './tasks/test-4';
 
 export const LAB_TASKS: Readonly<Record<string, LabTask>> = {
   [week01Task.labSlug]: week01Task,
@@ -37,6 +41,10 @@ export const LAB_TASKS: Readonly<Record<string, LabTask>> = {
   [week13Task.labSlug]: week13Task,
   [week14Task.labSlug]: week14Task,
   [week15Task.labSlug]: week15Task,
+  [test1Task.labSlug]: test1Task,
+  [test2Task.labSlug]: test2Task,
+  [test3Task.labSlug]: test3Task,
+  [test4Task.labSlug]: test4Task,
 };
 
 /** The consensus task authored for a lab, or undefined when none exists. */

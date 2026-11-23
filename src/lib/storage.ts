@@ -11,6 +11,10 @@ export function exerciseProgressKey(labSlug: string, stepId: string): string {
 export function consensusTreeKey(labSlug: string): string {
   return `${RP_STORAGE_PREFIX}:tree:${labSlug}`;
 }
+/** localStorage key for a lab's best quiz score. */
+export function quizScoreKey(labSlug: string): string {
+  return `${RP_STORAGE_PREFIX}:quiz:${labSlug}`;
+}
 
 /** localStorage key for the append-only activity log (JSON array). */
 export function activityLogKey(): string {
